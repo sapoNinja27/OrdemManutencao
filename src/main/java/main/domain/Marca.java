@@ -25,7 +25,9 @@ public class Marca implements Serializable {
 	@JsonIgnore
 	@OneToMany(mappedBy = "marca")
 	private List<Equipamento> equipamentos=new ArrayList<Equipamento>();
-	
+	public Marca() {
+		
+	}
 	public Marca(String nome) {
 		super();
 		this.nome = nome;

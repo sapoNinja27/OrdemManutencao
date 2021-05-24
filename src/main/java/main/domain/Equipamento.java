@@ -29,7 +29,7 @@ public class Equipamento implements Serializable {
 	
 	@JsonIgnore
 	@OneToOne
-	@JoinColumn(name = "ordem_servico_id")
+	@JoinColumn(name = "ordemServico_id")
 	@MapsId
 	private OrdemServico ordemServico;
 	

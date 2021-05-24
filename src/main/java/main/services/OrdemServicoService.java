@@ -1,11 +1,13 @@
 package main.services;
 
 import java.util.Optional;
+import java.util.Set;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import main.domain.OrdemServico;
+import main.dto.OrdemServicoDTO;
 import main.repositories.OrdemServicoRepository;
 import main.services.exceptions.ObjectNotFoundException;
 
@@ -15,6 +17,8 @@ public class OrdemServicoService {
 	
 	@Autowired
 	private OrdemServicoRepository repo;
+	@Autowired
+	private ClienteService clienteService;
 	
 	
 	public OrdemServico find(Integer id) {
@@ -25,6 +29,31 @@ public class OrdemServicoService {
 	
 	public OrdemServico insert(OrdemServico obj) {
 		obj.setId(null);
-		return repo.save(obj);
+		obj.setCliente(clienteService.find(obj.getCliente().getId()));
+		obj = repo.save(obj);
+		return obj;
 	}
+	public OrdemServico update(OrdemServico obj) {
+		OrdemServico newObj = find(obj.getId());
+		updateData(newObj, obj);
+		return repo.save(newObj);
+	}
+	private void updateData(OrdemServico newObj, OrdemServico obj) {
+		newObj.setProblemasExtras(obj.getProblemasExtras());
+		Set<String> fotos= obj.getFotos();
+		for (String foto : fotos) {
+			newObj.setFotos(foto);
+		}
+	}
+	public OrdemServico fromDTO(OrdemServicoDTO objDto) {
+		OrdemServico ord=new OrdemServico();
+		ord.setProblemasExtras(objDto.getProblemasExtras());
+		Set<String> fotos= objDto.getFotos();
+		for (String foto : fotos) {
+			ord.setFotos(foto);
+		}
+		return ord;
+	}
+
+	
 }

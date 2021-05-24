@@ -2,6 +2,7 @@ package main.resources;
 
 import java.net.URI;
 
+import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -13,6 +14,7 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import main.domain.OrdemServico;
+import main.dto.OrdemServicoDTO;
 import main.services.OrdemServicoService;
 
 @RestController
@@ -34,5 +36,13 @@ public class OrdemServicoResources {
 		obj = service.insert(obj);
 		URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(obj.getId()).toUri();
 		return ResponseEntity.created(uri).build();
+	}
+	
+	@RequestMapping(value = "/{id}", method = RequestMethod.PUT)
+	public ResponseEntity<Void> update(@Valid @RequestBody OrdemServicoDTO objDto, @PathVariable Integer id) {
+		OrdemServico obj = service.fromDTO(objDto);
+		obj.setId(id);
+		obj = service.update(obj);
+		return ResponseEntity.noContent().build();
 	}
 }

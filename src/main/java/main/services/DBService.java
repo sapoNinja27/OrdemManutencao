@@ -46,12 +46,16 @@ public class DBService {
 		
 		
 		OrdemServico ordem=new OrdemServico(cliente,equi1, sdf.parse("30/09/2017 10:32"), "problema na roda");
+		OrdemServico ordem2=new OrdemServico(cliente,equi2, sdf.parse("30/09/2017 10:32"), "problema na roda");
+		OrdemServico ordem3=new OrdemServico(cliente,equi3, sdf.parse("30/09/2017 10:32"), "problema na roda");
 		equi1.setOrdemServico(ordem);
+		equi2.setOrdemServico(ordem2);
+		equi3.setOrdemServico(ordem3);
 
 		marcaRepository.saveAll(Arrays.asList(m1,m2));
 		clienteRepository.saveAll(Arrays.asList(cliente));
 		enderecoRepository.saveAll(Arrays.asList(end));
-		ordemServicoRepository.saveAll(Arrays.asList(ordem));
+		ordemServicoRepository.saveAll(Arrays.asList(ordem,ordem2,ordem3));
 		equipamentoRepository.saveAll(Arrays.asList(equi1,equi2,equi3));
 
 	}
