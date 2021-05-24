@@ -1,0 +1,38 @@
+package main.domain.enums;
+
+public enum EstadoOrdemServico {
+	ENVIADO(1, "Enviado para analize"),
+	ANALIZE(2, "Analize em andamento"),
+	RECUSADO(3, "Ordem de reparos recusada pela empresa"),
+	CONFIRMACAO_PENDENTE(4, "Necessário confirmação do cliente"),
+	CANCELADO(5, "Ordem de reparos cancelada pelo cliente"),
+	ACEITO(6, "Pedido aceito");
+
+	private int cod;
+	private String descricao;
+
+	private EstadoOrdemServico(int cod, String descricao) {
+		this.cod = cod;
+		this.descricao = descricao;
+	}
+
+	public int getCod() {
+		return cod;
+	}
+
+	public String getDescricao() {
+		return descricao;
+	}
+
+	public static EstadoOrdemServico toEnum(Integer cod) {
+		if (cod == null) {
+			return null;
+		}
+		for (EstadoOrdemServico x : EstadoOrdemServico.values()) {
+			if (cod.equals(x.getCod())) {
+				return x;
+			}
+		}
+		throw new IllegalArgumentException("Id invalido: " + cod);
+	}
+}

@@ -1,16 +1,19 @@
 package main.domain;
 
 import java.io.Serializable;
-import java.util.ArrayList;
 import java.util.Date;
-import java.util.List;
+import java.util.HashSet;
+import java.util.Set;
 
 import javax.persistence.CascadeType;
+import javax.persistence.CollectionTable;
+import javax.persistence.ElementCollection;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.OneToMany;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.OneToOne;
 @Entity
 public class OrdemServico implements Serializable {
@@ -24,15 +27,25 @@ public class OrdemServico implements Serializable {
 	private Equipamento equipamento;
 	
 	private Date dataEntrada;
+	private String problema;
+	private String problemasExtras;
+	@ElementCollection
+	@CollectionTable(name = "FOTOS")
+	private Set<String> fotos = new HashSet<String>();
 	
-
-	@OneToMany(mappedBy = "ordemServico")
-	private List<Problema> problemas =new ArrayList<Problema>();
+	@ManyToOne
+	@JoinColumn(name = "cliente_id")
+	private Cliente cliente;
 	
-	public OrdemServico(Equipamento equipamento, Date dataEntrada) {
+	public OrdemServico() {
+		
+	}
+	public OrdemServico(Cliente cliente,Equipamento equipamento, Date dataEntrada, String problema) {
 		super();
+		this.cliente=cliente;
 		this.equipamento = equipamento;
 		this.dataEntrada = dataEntrada;
+		this.problema=problema;
 	}
 	public Integer getId() {
 		return id;
@@ -52,14 +65,33 @@ public class OrdemServico implements Serializable {
 	public void setDataEntrada(Date dataEntrada) {
 		this.dataEntrada = dataEntrada;
 	}
-	public List<Problema> getProblemas() {
-		List<Problema> p2=problemas;
-		return p2;
+	public String getProblema() {
+		return this.problema;
 	}
-	public void setProblemas(Problema problema) {
-		problemas.add(problema);
+	public void setProblema(String problema) {
+		this.problema=problema;
 	}
 	
+	public String getProblemasExtras() {
+		return problemasExtras;
+	}
+	public void setProblemasExtras(String problemasExtras) {
+		this.problemasExtras = problemasExtras;
+	}
+	
+	public Set<String> getFotos() {
+		Set<String> f2=fotos;
+		return f2;
+	}
+	public void setFotos(String fotos) {
+		this.fotos.add(fotos);
+	}
+	public Cliente getCliente() {
+		return cliente;
+	}
+	public void setCliente(Cliente cliente) {
+		this.cliente = cliente;
+	}
 	@Override
 	public int hashCode() {
 		final int prime = 31;

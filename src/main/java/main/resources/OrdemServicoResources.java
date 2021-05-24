@@ -16,7 +16,7 @@ import main.domain.OrdemServico;
 import main.services.OrdemServicoService;
 
 @RestController
-@RequestMapping(value = "/ordem")
+@RequestMapping(value = "/ordens")
 public class OrdemServicoResources {
 
 	@Autowired

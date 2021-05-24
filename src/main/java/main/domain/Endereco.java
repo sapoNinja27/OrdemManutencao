@@ -1,38 +1,41 @@
 package main.domain;
 
 import java.io.Serializable;
-
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
+import javax.persistence.MapsId;
+import javax.persistence.OneToOne;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+
 @Entity
-public class Problema implements Serializable {
+public class Endereco implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Integer id;
 	
-	private String nome;
-	private String descricao;
+	private String bairro;
+	private String cidade;
 	
 	@JsonIgnore
-	@ManyToOne
-	@JoinColumn(name = "ordemServico_id")
-	private OrdemServico ordemServico;
+	@OneToOne
+	@JoinColumn(name = "cliente_id")
+	@MapsId
+	private Cliente cliente;
 	
-	public Problema() {
+	public Endereco() {
 		
 	}
-	public Problema(String nome, String descricao) {
+	public Endereco(Cliente cliente,String bairro, String cidade) {
 		super();
-		this.nome = nome;
-		this.descricao = descricao;
+		this.cliente=cliente;
+		this.bairro = bairro;
+		this.cidade = cidade;
 	}
 	public Integer getId() {
 		return id;
@@ -40,24 +43,24 @@ public class Problema implements Serializable {
 	public void setId(Integer id) {
 		this.id = id;
 	}
-	public String getNome() {
-		return nome;
+	public String getBairro() {
+		return bairro;
 	}
-	public void setNome(String nome) {
-		this.nome = nome;
+	public void setBairro(String bairro) {
+		this.bairro = bairro;
 	}
-	public String getDescricao() {
-		return descricao;
+	public String getCidade() {
+		return cidade;
 	}
-	public void setDescricao(String descricao) {
-		this.descricao = descricao;
+	public void setCidade(String cidade) {
+		this.cidade = cidade;
 	}
 	
-	public OrdemServico getOrdemServico() {
-		return ordemServico;
+	public Cliente getCliente() {
+		return cliente;
 	}
-	public void setOrdemServico(OrdemServico ordemServico) {
-		this.ordemServico = ordemServico;
+	public void setCliente(Cliente cliente) {
+		this.cliente = cliente;
 	}
 	@Override
 	public int hashCode() {
@@ -74,7 +77,7 @@ public class Problema implements Serializable {
 			return false;
 		if (getClass() != obj.getClass())
 			return false;
-		Problema other = (Problema) obj;
+		Endereco other = (Endereco) obj;
 		if (id == null) {
 			if (other.id != null)
 				return false;
@@ -84,4 +87,5 @@ public class Problema implements Serializable {
 	}
 	
 	
+
 }

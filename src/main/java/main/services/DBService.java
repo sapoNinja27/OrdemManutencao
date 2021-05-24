@@ -6,12 +6,16 @@ import java.util.Arrays;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import main.domain.Cliente;
+import main.domain.Endereco;
 import main.domain.Equipamento;
+import main.domain.Marca;
 import main.domain.OrdemServico;
-import main.domain.Problema;
+import main.repositories.ClienteRepository;
+import main.repositories.EnderecoRepository;
 import main.repositories.EquipamentoRepository;
+import main.repositories.MarcaRepository;
 import main.repositories.OrdemServicoRepository;
-import main.repositories.ProblemaRepository;
 
 @Service
 public class DBService {
@@ -20,27 +24,35 @@ public class DBService {
 	@Autowired
 	private EquipamentoRepository equipamentoRepository;
 	@Autowired
-	private ProblemaRepository problemaRepository;
+	private EnderecoRepository enderecoRepository;
+	@Autowired
+	private ClienteRepository clienteRepository;
+	@Autowired
+	private MarcaRepository marcaRepository;
 
 	public void instantiateTestDataBase() throws Exception {
 		
-		Equipamento equi1=new Equipamento("Aparador de grama", "Excel");
+		Marca m1=new Marca("Rusquarna");
+		Marca m2=new Marca("bosh");
 		
-		Problema prob1=new Problema("Falha na roda", "Roda pode travar as vezes");
-		Problema prob2=new Problema("Falha no motor", "Consome muita gasolina");
+		Equipamento equi1=new Equipamento("Aparador de grama", m1);
+		Equipamento equi2=new Equipamento("furadeira", m1);
+		Equipamento equi3=new Equipamento("furadeira", m2);
 		
 		SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy HH:mm");
-
-		OrdemServico ordem=new OrdemServico(equi1, sdf.parse("30/09/2017 10:32"));
-		ordem.setProblemas(prob1);
-		ordem.setProblemas(prob2);
+		Cliente cliente=new Cliente("paulo", "48 9 8836 9755", "cpf", "email");
+		Endereco end=new Endereco(cliente,"jardim amelia","sombrio");
+		cliente.setEndereco(end);
+		
+		
+		OrdemServico ordem=new OrdemServico(cliente,equi1, sdf.parse("30/09/2017 10:32"), "problema na roda");
 		equi1.setOrdemServico(ordem);
-		prob1.setOrdemServico(ordem);
-		prob2.setOrdemServico(ordem);
 
+		marcaRepository.saveAll(Arrays.asList(m1,m2));
+		clienteRepository.saveAll(Arrays.asList(cliente));
+		enderecoRepository.saveAll(Arrays.asList(end));
 		ordemServicoRepository.saveAll(Arrays.asList(ordem));
-		equipamentoRepository.saveAll(Arrays.asList(equi1));
-		problemaRepository.saveAll(Arrays.asList(prob1,prob2));
+		equipamentoRepository.saveAll(Arrays.asList(equi1,equi2,equi3));
 
 	}
 }
