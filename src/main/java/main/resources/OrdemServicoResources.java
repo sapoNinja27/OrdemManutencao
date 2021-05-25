@@ -13,8 +13,11 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
+import main.domain.Cliente;
 import main.domain.OrdemServico;
+import main.dto.ClienteNewDTO;
 import main.dto.OrdemServicoDTO;
+import main.dto.OrdemServicoNewDTO;
 import main.services.OrdemServicoService;
 
 @RestController
@@ -32,7 +35,8 @@ public class OrdemServicoResources {
 	}
 	
 	@RequestMapping(method = RequestMethod.POST)
-	public ResponseEntity<Void> insert(@RequestBody OrdemServico obj) {
+	public ResponseEntity<Void> insert(@Valid @RequestBody OrdemServicoNewDTO objDto) {
+		OrdemServico obj = service.fromDTO(objDto);
 		obj = service.insert(obj);
 		URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(obj.getId()).toUri();
 		return ResponseEntity.created(uri).build();

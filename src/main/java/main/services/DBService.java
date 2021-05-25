@@ -4,6 +4,7 @@ import java.text.SimpleDateFormat;
 import java.util.Arrays;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import main.domain.Cliente;
@@ -11,11 +12,14 @@ import main.domain.Endereco;
 import main.domain.Equipamento;
 import main.domain.Marca;
 import main.domain.OrdemServico;
+import main.domain.Usuario;
+import main.domain.enums.TipoUsuario;
 import main.repositories.ClienteRepository;
 import main.repositories.EnderecoRepository;
 import main.repositories.EquipamentoRepository;
 import main.repositories.MarcaRepository;
 import main.repositories.OrdemServicoRepository;
+import main.repositories.UsuarioRepository;
 
 @Service
 public class DBService {
@@ -29,7 +33,11 @@ public class DBService {
 	private ClienteRepository clienteRepository;
 	@Autowired
 	private MarcaRepository marcaRepository;
-
+	@Autowired
+	private BCryptPasswordEncoder pe;
+	@Autowired
+	private UsuarioRepository usuarioRepository;
+	
 	public void instantiateTestDataBase() throws Exception {
 		
 		Marca m1=new Marca("Rusquarna");
@@ -51,7 +59,9 @@ public class DBService {
 		equi1.setOrdemServico(ordem);
 		equi2.setOrdemServico(ordem2);
 		equi3.setOrdemServico(ordem3);
-
+		Usuario user=new Usuario("joao_Pedro",pe.encode("1234"));
+		user.addPerfil(TipoUsuario.ADMIN);
+		usuarioRepository.save(user);
 		marcaRepository.saveAll(Arrays.asList(m1,m2));
 		clienteRepository.saveAll(Arrays.asList(cliente));
 		enderecoRepository.saveAll(Arrays.asList(end));
