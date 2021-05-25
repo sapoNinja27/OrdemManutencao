@@ -25,7 +25,12 @@ public enum TipoUsuario {
 	public String getDescricao() {
 		return descricao;
 	}
-
+	public static String toString(TipoUsuario usr) {
+		if (usr == null) {
+			return null;
+		}
+		return usr.getDescricao();
+	}
 	public static TipoUsuario toEnum(Integer cod) {
 		if (cod == null) {
 			return null;

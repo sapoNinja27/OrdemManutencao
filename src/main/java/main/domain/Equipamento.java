@@ -25,6 +25,7 @@ public class Equipamento implements Serializable {
 	
 	@ManyToOne
 	@JoinColumn(name = "marca_id")
+	@JsonIgnore
 	private Marca marca;
 	
 	@JsonIgnore

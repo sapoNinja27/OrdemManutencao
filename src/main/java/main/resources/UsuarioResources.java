@@ -68,7 +68,7 @@ public class UsuarioResources {
 	}
 	@RequestMapping(method = RequestMethod.GET)
 	public ResponseEntity<List<Usuario>> findAll() {
-		List<Usuario> list = service.findAll().stream().map(obj -> new Usuario(obj.getNome(),obj.getSenha())).collect(Collectors.toList());
+		List<Usuario> list = service.findAll();
 		return ResponseEntity.ok().body(list);
 	}
 }

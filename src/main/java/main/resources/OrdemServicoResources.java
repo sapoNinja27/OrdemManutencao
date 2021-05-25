@@ -13,9 +13,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
-import main.domain.Cliente;
 import main.domain.OrdemServico;
-import main.dto.ClienteNewDTO;
 import main.dto.OrdemServicoDTO;
 import main.dto.OrdemServicoNewDTO;
 import main.services.OrdemServicoService;
