@@ -1,6 +1,7 @@
 package main.resources;
 
 import java.net.URI;
+import java.util.List;
 
 import javax.validation.Valid;
 
@@ -31,6 +32,11 @@ public class OrdemServicoResources {
 		OrdemServico obj = service.find(id);
 		return ResponseEntity.ok().body(obj);
 	}
+	@RequestMapping( method = RequestMethod.GET)
+	public ResponseEntity<List<OrdemServico>> findAll() {
+		List<OrdemServico> list = service.findAll();
+		return ResponseEntity.ok().body(list);
+	}
 	
 	@RequestMapping(method = RequestMethod.POST)
 	public ResponseEntity<Void> insert(@Valid @RequestBody OrdemServicoNewDTO objDto) {
@@ -39,9 +45,23 @@ public class OrdemServicoResources {
 		URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(obj.getId()).toUri();
 		return ResponseEntity.created(uri).build();
 	}
-	
 	@RequestMapping(value = "/{id}", method = RequestMethod.PUT)
-	public ResponseEntity<Void> update(@Valid @RequestBody OrdemServicoDTO objDto, @PathVariable Integer id) {
+	public ResponseEntity<Void> update(@Valid @RequestBody OrdemServicoNewDTO objDto, @PathVariable Integer id) {
+		//TODO 
+//		private Integer equipamento; pode ser modificado
+//		
+//		private Date dataEntrada; nao pode ser modificada
+//		private String problema; pode ser modificado
+//		
+//		private Integer cliente; nao pode ser modificada
+		OrdemServico obj = service.fromDTO(objDto);
+		obj.setId(id);
+		obj = service.update(obj);
+		return ResponseEntity.noContent().build();
+	}
+	
+	@RequestMapping(value = "/{id}/finalizacoes", method = RequestMethod.PUT)
+	public ResponseEntity<Void> finish(@Valid @RequestBody OrdemServicoDTO objDto, @PathVariable Integer id) {
 		OrdemServico obj = service.fromDTO(objDto);
 		obj.setId(id);
 		obj = service.update(obj);

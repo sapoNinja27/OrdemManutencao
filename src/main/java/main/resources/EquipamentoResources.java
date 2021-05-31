@@ -49,8 +49,13 @@ public class EquipamentoResources {
 		return ResponseEntity.ok().body(marcaService.findAll());
 	}
 	@RequestMapping(value="{marca}/tipos" ,method = RequestMethod.GET)
-	public ResponseEntity<List<Equipamento>> findAll(@PathVariable Integer marca) {
+	public ResponseEntity<List<Equipamento>> findAllByMarca(@PathVariable Integer marca) {
 		List<Equipamento> list = equipamentoService.findAll(marca);
+		return ResponseEntity.ok().body(list);
+	}
+	@RequestMapping(value="/tipos" ,method = RequestMethod.GET)
+	public ResponseEntity<List<Equipamento>> findAll() {
+		List<Equipamento> list = equipamentoService.findAll();
 		return ResponseEntity.ok().body(list);
 	}
 }

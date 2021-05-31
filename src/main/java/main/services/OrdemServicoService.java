@@ -1,6 +1,7 @@
 package main.services;
 
 import java.util.Date;
+import java.util.List;
 import java.util.Optional;
 import java.util.Set;
 
@@ -29,7 +30,9 @@ public class OrdemServicoService {
 		Optional<OrdemServico> obj = repo.findById(id);
 		return obj.orElseThrow(() -> new ObjectNotFoundException("Ordem de serviço não encontrado! Id: " + id));
 	}
-
+	public List <OrdemServico> findAll() {
+		return repo.findAll();
+	}
 	public OrdemServico insert(OrdemServico obj) {
 		obj.setId(null);
 		obj = repo.save(obj);
@@ -64,6 +67,8 @@ public class OrdemServicoService {
 		Cliente cli = clienteService.find(objDto.getCliente());
 		Equipamento equip = equipamentoService.find(objDto.getEquipamento());
 		OrdemServico ord = new OrdemServico(cli, equip, new Date(System.currentTimeMillis()), objDto.getProblema());
+		equip.addOrdem(ord);
+		equipamentoService.update(equip);
 		return ord;
 	}
 

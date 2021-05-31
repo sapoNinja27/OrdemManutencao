@@ -8,6 +8,7 @@ import javax.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import main.domain.Cliente;
 import main.domain.Equipamento;
 import main.domain.Marca;
 import main.dto.EquipamentoDTO;
@@ -35,10 +36,20 @@ public class EquipamentoService {
 		obj = repo.save(obj);
 		return obj;
 	}
-
+	public Equipamento update(Equipamento obj) {
+		Equipamento newObj = find(obj.getId());
+		updateData(newObj, obj);
+		return repo.save(newObj);
+	}
+	private void updateData(Equipamento newObj, Equipamento obj) {
+		newObj.setOrdens(obj.getOrdens());
+	}
 	public List<Equipamento> findAll(Integer marca) {
 		Marca obj=marcaService.find(marca);
 		return repo.findByMarca(obj);
+	}
+	public List<Equipamento> findAll() {
+		return repo.findAll();
 	}
 	public Equipamento fromDTO(EquipamentoDTO objDto) {
 		Marca marca=marcaService.find(objDto.getMarca());

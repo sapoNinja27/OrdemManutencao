@@ -23,7 +23,8 @@ public class OrdemServico implements Serializable {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Integer id;
 
-	@OneToOne(cascade = CascadeType.ALL, mappedBy = "ordemServico")
+	@ManyToOne
+	@JoinColumn(name = "equipamento_id")
 	private Equipamento equipamento;
 	
 	private Date dataEntrada;

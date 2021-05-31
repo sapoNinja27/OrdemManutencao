@@ -1,6 +1,8 @@
 package main.domain;
 
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -9,6 +11,7 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.MapsId;
+import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -25,14 +28,11 @@ public class Equipamento implements Serializable {
 	
 	@ManyToOne
 	@JoinColumn(name = "marca_id")
-	@JsonIgnore
 	private Marca marca;
 	
 	@JsonIgnore
-	@OneToOne
-	@JoinColumn(name = "ordemServico_id")
-	@MapsId
-	private OrdemServico ordemServico;
+	@OneToMany(mappedBy = "equipamento")
+	private List<OrdemServico> ordens = new ArrayList<OrdemServico>();
 	
 	public Equipamento() {
 		
@@ -61,11 +61,15 @@ public class Equipamento implements Serializable {
 		this.marca = marca;
 	}
 	
-	public OrdemServico getOrdemServico() {
-		return ordemServico;
+	
+	public List<OrdemServico> getOrdens() {
+		return ordens;
 	}
-	public void setOrdemServico(OrdemServico ordemServico) {
-		this.ordemServico = ordemServico;
+	public void addOrdem(OrdemServico ordem) {
+		this.ordens.add(ordem);
+	}
+	public void setOrdens(List<OrdemServico> ordens) {
+		this.ordens = ordens;
 	}
 	@Override
 	public int hashCode() {

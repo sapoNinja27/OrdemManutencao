@@ -9,10 +9,6 @@ import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 
-import com.amazonaws.AmazonClientException;
-import com.amazonaws.AmazonServiceException;
-import com.amazonaws.services.s3.model.AmazonS3Exception;
-
 import main.services.exceptions.AuthorizationException;
 import main.services.exceptions.DataIntegrityException;
 import main.services.exceptions.ObjectNotFoundException;

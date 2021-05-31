@@ -1,8 +1,6 @@
 package main.recources.exceptions;
 
 import java.io.Serializable;
-import java.text.SimpleDateFormat;
-import java.util.Date;
 
 public class StandardError implements Serializable {
 
