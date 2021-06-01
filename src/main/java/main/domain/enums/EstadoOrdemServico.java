@@ -1,12 +1,13 @@
 package main.domain.enums;
 
 public enum EstadoOrdemServico {
-	ENVIADO(1, "Enviado para analize"),
+	ANALIZE_PENDENTE(1, "Analize pendente"),
 	ANALIZE(2, "Analize em andamento"),
 	RECUSADO(3, "Ordem de reparos recusada pela empresa"),
 	CONFIRMACAO_PENDENTE(4, "Necessário confirmação do cliente"),
 	CANCELADO(5, "Ordem de reparos cancelada pelo cliente"),
-	ACEITO(6, "Pedido aceito");
+	ACEITO(6, "Pedido aceito"),
+	CONCLUIDO(7, "Manutenção finalizada");
 
 	private int cod;
 	private String descricao;
@@ -23,7 +24,12 @@ public enum EstadoOrdemServico {
 	public String getDescricao() {
 		return descricao;
 	}
-
+	public static String toString(EstadoOrdemServico stt) {
+		if (stt == null) {
+			return null;
+		}
+		return stt.getDescricao();
+	}
 	public static EstadoOrdemServico toEnum(Integer cod) {
 		if (cod == null) {
 			return null;

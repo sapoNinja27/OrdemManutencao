@@ -54,9 +54,8 @@ public class ClienteResources {
 		return ResponseEntity.noContent().build();
 	}
 	@RequestMapping(method = RequestMethod.GET)
-	public ResponseEntity<List<ClienteDTO>> findAll() {
+	public ResponseEntity<List<Cliente>> findAll() {
 		List<Cliente> list = service.findAll();
-		List<ClienteDTO> listDto = list.stream().map(obj -> new ClienteDTO(obj)).collect(Collectors.toList());
-		return ResponseEntity.ok().body(listDto);
+		return ResponseEntity.ok().body(list);
 	}
 }

@@ -5,16 +5,17 @@ import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
 
-import javax.persistence.CascadeType;
 import javax.persistence.CollectionTable;
 import javax.persistence.ElementCollection;
 import javax.persistence.Entity;
+import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
-import javax.persistence.OneToOne;
+
+import main.domain.enums.EstadoOrdemServico;
 @Entity
 public class OrdemServico implements Serializable {
 	private static final long serialVersionUID = 1L;
@@ -38,6 +39,8 @@ public class OrdemServico implements Serializable {
 	@JoinColumn(name = "cliente_id")
 	private Cliente cliente;
 	
+	@Enumerated
+	private EstadoOrdemServico state;
 	public OrdemServico() {
 		
 	}
@@ -47,6 +50,7 @@ public class OrdemServico implements Serializable {
 		this.equipamento = equipamento;
 		this.dataEntrada = dataEntrada;
 		this.problema=problema;
+		this.state=EstadoOrdemServico.ANALIZE_PENDENTE;
 	}
 	public Integer getId() {
 		return id;
@@ -80,6 +84,15 @@ public class OrdemServico implements Serializable {
 		this.problemasExtras = problemasExtras;
 	}
 	
+	public EstadoOrdemServico getState() {
+		return state;
+	}
+	public String getEstado() {
+		return EstadoOrdemServico.toString(state);
+	}
+	public void setState(EstadoOrdemServico state) {
+		this.state = state;
+	}
 	public Set<String> getFotos() {
 		Set<String> f2=fotos;
 		return f2;
