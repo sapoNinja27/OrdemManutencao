@@ -31,16 +31,16 @@ public class UsuarioService {
 				"Usuario inesistente! Id: " + id ));
 	}
 	
-	public Usuario findByNome(String nome) {
+	public Usuario buscarPeloNome(String nome) {
 		
 		UserSS user = UserService.authenticated();
-		if (user == null || !user.hasRole(TipoUsuario.ADMIN) && !nome.equals(user.getUsername())) {
+		if (user == null ||  !nome.equals(user.getUsername())) {
 			throw new AuthorizationException("Acesso negado");
 		}
 		Usuario obj = repo.findByNome(nome);
 		if (obj == null) {
 			throw new ObjectNotFoundException(
-					"Objeto não encontrado! Id: " + user.getId() + ", Tipo: " + Cliente.class.getName());
+					"Objeto não encontrado! Id: " + ", Tipo: " + Cliente.class.getName());
 		}
 		return obj;
 	}

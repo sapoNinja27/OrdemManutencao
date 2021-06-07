@@ -74,9 +74,28 @@ public class DBService {
 		equi1.addOrdem(ordem);
 		equi2.addOrdem(ordem2);
 		equi3.addOrdem(ordem3);
-		Usuario user=new Usuario("joao_Pedro",pe.encode("1234"));
+		Usuario user=new Usuario("adm",pe.encode("1"));
 		user.addPerfil(TipoUsuario.ADMIN);
-		usuarioRepository.save(user);
+		user.addPerfil(TipoUsuario.ANALISTA);
+		user.addPerfil(TipoUsuario.RECEPCIONISTA);
+		user.addPerfil(TipoUsuario.TECNICO);
+		
+		
+		Usuario user2=new Usuario("tec",pe.encode("1"));
+		user2.addPerfil(TipoUsuario.TECNICO);
+		
+		
+		Usuario user3=new Usuario("rec",pe.encode("1"));
+		user3.addPerfil(TipoUsuario.RECEPCIONISTA);
+		
+		Usuario user4=new Usuario("an",pe.encode("1"));
+		user4.addPerfil(TipoUsuario.ANALISTA);
+		
+		Usuario user5=new Usuario("clenio",pe.encode("1"));
+		user5.addPerfil(TipoUsuario.ANALISTA);
+		user5.addPerfil(TipoUsuario.RECEPCIONISTA);
+		
+		usuarioRepository.saveAll(Arrays.asList(user,user2,user3,user4,user5));
 		marcaRepository.saveAll(Arrays.asList(m1,m2));
 		clienteRepository.saveAll(Arrays.asList(cliente,cliente2,cliente3,cliente4,cliente5, cliente6));
 		enderecoRepository.saveAll(Arrays.asList(end));

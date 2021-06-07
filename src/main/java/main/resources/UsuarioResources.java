@@ -35,10 +35,11 @@ public class UsuarioResources {
 		Usuario obj = service.find(id);
 		return ResponseEntity.ok().body(obj);
 	}
-	@PreAuthorize("hasAnyRole('ADMIN')")
-	@RequestMapping(value = "/{nome}", method = RequestMethod.GET)
+
+
+	@RequestMapping(value = "/nome/{nome}", method = RequestMethod.GET)
 	public ResponseEntity<Usuario> findByNome(@PathVariable String nome) {
-		Usuario obj = service.findByNome(nome);
+		Usuario obj = service.buscarPeloNome(nome);
 		return ResponseEntity.ok().body(obj);
 	}
 	@PreAuthorize("hasAnyRole('ADMIN')")

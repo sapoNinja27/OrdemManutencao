@@ -28,19 +28,19 @@ public class OrdemServicoResources {
 	@Autowired
 	private OrdemServicoService service;
 
-	@PreAuthorize("hasAnyRole('ADMIN')")
+	
 	@RequestMapping(value = "/{id}", method = RequestMethod.GET)
 	public ResponseEntity<OrdemServico> find(@PathVariable Integer id) {
 		OrdemServico obj = service.find(id);
 		return ResponseEntity.ok().body(obj);
 	}
-	@PreAuthorize("hasAnyRole('ADMIN')")
+	
 	@RequestMapping( method = RequestMethod.GET)
 	public ResponseEntity<List<OrdemServico>> findAll() {
 		List<OrdemServico> list = service.findAll();
 		return ResponseEntity.ok().body(list);
 	}
-	@PreAuthorize("hasAnyRole('ADMIN')")
+	@PreAuthorize("hasAnyRole('ADMIN','RECEPCIONISTA')")
 	@RequestMapping(method = RequestMethod.POST)
 	public ResponseEntity<Void> insert(@Valid @RequestBody OrdemServicoNewDTO objDto) {
 		OrdemServico obj = service.fromDTO(objDto);
@@ -63,7 +63,7 @@ public class OrdemServicoResources {
 		obj = service.update(obj);
 		return ResponseEntity.noContent().build();
 	}
-	@PreAuthorize("hasAnyRole('ADMIN')")
+	@PreAuthorize("hasAnyRole('ADMIN','ANALISTA')")
 	@RequestMapping(value = "/{id}/recusar", method = RequestMethod.PUT)
 	public ResponseEntity<Void> recusar(@PathVariable Integer id) {
 		OrdemServico obj = service.find(id);
@@ -71,7 +71,7 @@ public class OrdemServicoResources {
 		obj = service.recusar(obj);
 		return ResponseEntity.noContent().build();
 	}
-	@PreAuthorize("hasAnyRole('ADMIN')")
+	@PreAuthorize("hasAnyRole('ADMIN','ANALISTA')")
 	@RequestMapping(value = "/{id}/finalizacoes", method = RequestMethod.PUT)
 	public ResponseEntity<Void> finish(@Valid @RequestBody OrdemServicoDTO objDto, @PathVariable Integer id) {
 		OrdemServico obj = service.fromDTO(objDto);
