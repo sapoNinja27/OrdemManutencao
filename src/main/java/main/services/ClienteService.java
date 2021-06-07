@@ -13,7 +13,6 @@ import main.domain.Endereco;
 import main.dto.ClienteDTO;
 import main.dto.ClienteNewDTO;
 import main.repositories.ClienteRepository;
-import main.repositories.EnderecoRepository;
 import main.services.exceptions.DataIntegrityException;
 import main.services.exceptions.ObjectNotFoundException;
 
@@ -24,7 +23,7 @@ public class ClienteService {
 	@Autowired
 	private ClienteRepository repo;
 	@Autowired
-	private EnderecoRepository endRepo;
+	private EnderecoService endService;
 	
 	public Cliente find(Integer id) {
 		Optional<Cliente> obj = repo.findById(id);
@@ -36,7 +35,7 @@ public class ClienteService {
 	public Cliente insert(Cliente obj) {
 		obj.setId(null);
 		obj = repo.save(obj);
-		endRepo.save(obj.getEndereco());
+		endService.insert(obj.getEndereco());
 		return obj;
 	}
 	
@@ -47,7 +46,13 @@ public class ClienteService {
 	}
 
 	public void delete(Integer id) {
-		find(id);
+//		Cliente cli=
+				find(id);
+//		for(int i =0; i<cli.getOrdens().size();i++) {
+//			if(cli.getOrdens().get(i).getState()==EstadoOrdemServico.CANCELADO||cli.getOrdens().get(i).getState()==EstadoOrdemServico.RECUSADO) {
+//				ordemService.
+//			}
+//		}
 		try {
 			repo.deleteById(id);
 		} catch (DataIntegrityViolationException e) {
@@ -59,7 +64,10 @@ public class ClienteService {
 		return repo.findAll();
 	}
 	public Cliente fromDTO(ClienteDTO objDto) {
-		return new Cliente(objDto.getNome(),objDto.getTelefone(), objDto.getEmail(), null);
+		Cliente cli = new Cliente( objDto.getNome(),objDto.getTelefone(), objDto.getEmail(), null);
+		Endereco end = new Endereco(cli,objDto.getBairro(), objDto.getCidade());
+		cli.setEndereco(end);
+		return cli;
 	}
 
 	public Cliente fromDTO(ClienteNewDTO objDto) {

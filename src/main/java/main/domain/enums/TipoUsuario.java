@@ -2,10 +2,10 @@ package main.domain.enums;
 
 
 public enum TipoUsuario {
-	RECEPCIONISTA(1, "Recepcionista"),
-	ANALISTA(2, "Analista"),
-	TECNICO(3, "Tecnico"),
-	ADMIN(4, "Administrador");
+	RECEPCIONISTA(1, "ROLE_RECEPCIONISTA"),
+	ANALISTA(2, "ROLE_ANALISTA"),
+	TECNICO(3, "ROLE_TECNICO"),
+	ADMIN(4, "ROLE_ADMIN");
 
 	private int cod;
 	private String descricao;

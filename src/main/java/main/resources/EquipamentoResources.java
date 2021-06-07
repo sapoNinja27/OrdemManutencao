@@ -7,6 +7,7 @@ import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -29,7 +30,7 @@ public class EquipamentoResources {
 	@Autowired
 	private MarcaService marcaService;
 	
-		
+	@PreAuthorize("hasAnyRole('ADMIN')")
 	@RequestMapping(value = "/tipos",method = RequestMethod.POST)
 	public ResponseEntity<Void> insertT(@Valid @RequestBody EquipamentoDTO objDto) {
 		Equipamento obj=equipamentoService.fromDTO(objDto);
@@ -37,22 +38,25 @@ public class EquipamentoResources {
 		URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(obj.getId()).toUri();
 		return ResponseEntity.created(uri).build();
 	}
+	@PreAuthorize("hasAnyRole('ADMIN')")
 	@RequestMapping(value = "/marcas",method = RequestMethod.POST)
 	public ResponseEntity<Void> insertM(@Valid @RequestBody Marca obj) {
 		marcaService.insert(obj);
 		URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(obj.getId()).toUri();
 		return ResponseEntity.created(uri).build();
 	}
-	
+	@PreAuthorize("hasAnyRole('ADMIN')")
 	@RequestMapping(value = "/marcas", method = RequestMethod.GET)
 	public ResponseEntity<List<Marca>> findTAll() {
 		return ResponseEntity.ok().body(marcaService.findAll());
 	}
+	@PreAuthorize("hasAnyRole('ADMIN')")
 	@RequestMapping(value="{marca}/tipos" ,method = RequestMethod.GET)
 	public ResponseEntity<List<Equipamento>> findAllByMarca(@PathVariable Integer marca) {
 		List<Equipamento> list = equipamentoService.findAll(marca);
 		return ResponseEntity.ok().body(list);
 	}
+	@PreAuthorize("hasAnyRole('ADMIN')")
 	@RequestMapping(value="/tipos" ,method = RequestMethod.GET)
 	public ResponseEntity<List<Equipamento>> findAll() {
 		List<Equipamento> list = equipamentoService.findAll();

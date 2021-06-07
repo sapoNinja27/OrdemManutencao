@@ -13,6 +13,7 @@ import main.domain.Equipamento;
 import main.domain.Marca;
 import main.domain.OrdemServico;
 import main.domain.Usuario;
+import main.domain.enums.EstadoOrdemServico;
 import main.domain.enums.TipoUsuario;
 import main.repositories.ClienteRepository;
 import main.repositories.EnderecoRepository;
@@ -61,6 +62,15 @@ public class DBService {
 		OrdemServico ordem=new OrdemServico(cliente,equi1, sdf.parse("30/09/2017 10:32"), "problema na roda");
 		OrdemServico ordem2=new OrdemServico(cliente,equi2, sdf.parse("30/09/2017 10:32"), "problema na roda");
 		OrdemServico ordem3=new OrdemServico(cliente,equi3, sdf.parse("30/09/2017 10:32"), "problema na roda");
+		OrdemServico ordem4=new OrdemServico(cliente,equi3, sdf.parse("30/09/2017 10:32"), "problema na roda");
+		OrdemServico ordem5=new OrdemServico(cliente,equi3, sdf.parse("30/09/2017 10:32"), "problema na roda");
+		OrdemServico ordem6=new OrdemServico(cliente,equi3, sdf.parse("30/09/2017 10:32"), "problema na roda");
+		ordem.setState(EstadoOrdemServico.ANALIZE_PENDENTE);
+		ordem2.setState(EstadoOrdemServico.RECUSADO);
+		ordem3.setState(EstadoOrdemServico.CONFIRMACAO_PENDENTE);
+		ordem4.setState(EstadoOrdemServico.CANCELADO);
+		ordem5.setState(EstadoOrdemServico.MANUTENCAO_PENDENTE);
+		ordem6.setState(EstadoOrdemServico.CONCLUIDO);
 		equi1.addOrdem(ordem);
 		equi2.addOrdem(ordem2);
 		equi3.addOrdem(ordem3);
@@ -71,7 +81,7 @@ public class DBService {
 		clienteRepository.saveAll(Arrays.asList(cliente,cliente2,cliente3,cliente4,cliente5, cliente6));
 		enderecoRepository.saveAll(Arrays.asList(end));
 		equipamentoRepository.saveAll(Arrays.asList(equi1,equi2,equi3));
-		ordemServicoRepository.saveAll(Arrays.asList(ordem,ordem2,ordem3));
+		ordemServicoRepository.saveAll(Arrays.asList(ordem,ordem2,ordem3,ordem4,ordem5,ordem6));
 
 	}
 }

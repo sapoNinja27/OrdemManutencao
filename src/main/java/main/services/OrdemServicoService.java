@@ -44,6 +44,10 @@ public class OrdemServicoService {
 		updateData(newObj, obj);
 		return repo.save(newObj);
 	}
+	public OrdemServico recusar(OrdemServico obj) {
+		
+		return repo.save(obj);
+	}
 
 	private void updateData(OrdemServico newObj, OrdemServico obj) {
 		newObj.setProblemasExtras(obj.getProblemasExtras());

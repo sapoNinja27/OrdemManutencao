@@ -21,6 +21,10 @@ public class ClienteDTO implements Serializable {
 	private String email;
 	@NotEmpty(message = "Telefone invalido")
 	private String telefone;
+	@NotEmpty(message = "Preenchimento obrigatório")
+	private String bairro;
+	@NotEmpty(message = "Preenchimento obrigatório")
+	private String cidade;
 
 	public ClienteDTO() {
 
@@ -31,6 +35,8 @@ public class ClienteDTO implements Serializable {
 		nome = obj.getNome();
 		email = obj.getEmail();
 		telefone=obj.getTelefone();
+		bairro=obj.getEndereco().getBairro();
+		cidade=obj.getEndereco().getCidade();
 	}
 
 	public Integer getId() {
@@ -63,6 +69,22 @@ public class ClienteDTO implements Serializable {
 
 	public void setTelefone(String telefone) {
 		this.telefone = telefone;
+	}
+
+	public String getBairro() {
+		return bairro;
+	}
+
+	public void setBairro(String bairro) {
+		this.bairro = bairro;
+	}
+
+	public String getCidade() {
+		return cidade;
+	}
+
+	public void setCidade(String cidade) {
+		this.cidade = cidade;
 	}
 
 }

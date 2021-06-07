@@ -9,9 +9,12 @@ import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import main.domain.Cliente;
 import main.domain.Usuario;
 import main.domain.enums.TipoUsuario;
 import main.repositories.UsuarioRepository;
+import main.security.UserSS;
+import main.services.exceptions.AuthorizationException;
 import main.services.exceptions.DataIntegrityException;
 import main.services.exceptions.ObjectNotFoundException;
 
@@ -28,6 +31,19 @@ public class UsuarioService {
 				"Usuario inesistente! Id: " + id ));
 	}
 	
+	public Usuario findByNome(String nome) {
+		
+		UserSS user = UserService.authenticated();
+		if (user == null || !user.hasRole(TipoUsuario.ADMIN) && !nome.equals(user.getUsername())) {
+			throw new AuthorizationException("Acesso negado");
+		}
+		Usuario obj = repo.findByNome(nome);
+		if (obj == null) {
+			throw new ObjectNotFoundException(
+					"Objeto não encontrado! Id: " + user.getId() + ", Tipo: " + Cliente.class.getName());
+		}
+		return obj;
+	}
 	@Transactional
 	public Usuario insert(Usuario obj) {
 		obj.setId(null);
