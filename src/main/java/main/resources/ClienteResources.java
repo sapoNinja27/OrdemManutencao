@@ -17,8 +17,8 @@ import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import main.domain.Cliente;
 import main.domain.Endereco;
-import main.dto.ClienteDTO;
-import main.dto.ClienteNewDTO;
+import main.dto.cliente.ClienteNovoDTO;
+import main.dto.cliente.ClienteUpdateDTO;
 import main.services.ClienteService;
 import main.services.EnderecoService;
 
@@ -39,7 +39,7 @@ public class ClienteResources {
 	}
 	@PreAuthorize("hasAnyRole('ADMIN','RECEPCIONISTA')")
 	@RequestMapping(method = RequestMethod.POST)
-	public ResponseEntity<Void> insert(@Valid @RequestBody ClienteNewDTO objDto) {
+	public ResponseEntity<Void> insert(@Valid @RequestBody ClienteNovoDTO objDto) {
 		Cliente obj = service.fromDTO(objDto);
 		obj = service.insert(obj);
 		URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(obj.getId()).toUri();
@@ -47,7 +47,7 @@ public class ClienteResources {
 	}
 	@PreAuthorize("hasAnyRole('ADMIN','RECEPCIONISTA')")
 	@RequestMapping(value = "/{id}", method = RequestMethod.PUT)
-	public ResponseEntity<Void> update(@Valid @RequestBody ClienteDTO objDto, @PathVariable Integer id) {
+	public ResponseEntity<Void> update(@Valid @RequestBody ClienteUpdateDTO objDto, @PathVariable Integer id) {
 		Cliente obj = service.fromDTO(objDto);
 		Endereco end=new Endereco(obj,objDto.getBairro(),objDto.getCidade());
 		Cliente cli=service.find(id);

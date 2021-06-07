@@ -10,8 +10,8 @@ import org.springframework.transaction.annotation.Transactional;
 
 import main.domain.Cliente;
 import main.domain.Endereco;
-import main.dto.ClienteDTO;
-import main.dto.ClienteNewDTO;
+import main.dto.cliente.ClienteNovoDTO;
+import main.dto.cliente.ClienteUpdateDTO;
 import main.repositories.ClienteRepository;
 import main.services.exceptions.DataIntegrityException;
 import main.services.exceptions.ObjectNotFoundException;
@@ -63,14 +63,14 @@ public class ClienteService {
 	public List<Cliente> findAll() {
 		return repo.findAll();
 	}
-	public Cliente fromDTO(ClienteDTO objDto) {
+	public Cliente fromDTO(ClienteUpdateDTO objDto) {
 		Cliente cli = new Cliente( objDto.getNome(),objDto.getTelefone(), objDto.getEmail(), null);
 		Endereco end = new Endereco(cli,objDto.getBairro(), objDto.getCidade());
 		cli.setEndereco(end);
 		return cli;
 	}
 
-	public Cliente fromDTO(ClienteNewDTO objDto) {
+	public Cliente fromDTO(ClienteNovoDTO objDto) {
 		Cliente cli = new Cliente( objDto.getNome(),objDto.getTelefone(), objDto.getEmail(), objDto.getCpf());
 		Endereco end = new Endereco(cli,objDto.getBairro(), objDto.getCidade());
 		cli.setEndereco(end);

@@ -19,7 +19,7 @@ import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import main.domain.Usuario;
 import main.domain.enums.TipoUsuario;
-import main.dto.UsuarioPerfilDTO;
+import main.dto.usuario.UsuarioPerfilDTO;
 import main.services.UsuarioService;
 
 @RestController
@@ -50,7 +50,6 @@ public class UsuarioResources {
 		return ResponseEntity.created(uri).build();
 	}
 	//alterar nome e senha
-	@PreAuthorize("hasAnyRole('ADMIN')")
 	@RequestMapping(value = "/{id}", method = RequestMethod.PUT)
 	public ResponseEntity<Void> update(@Valid @RequestBody Usuario obj, @PathVariable Integer id) {
 		obj.setId(id);

@@ -1,9 +1,9 @@
-package main.dto;
+package main.dto.ordem.servico;
 
 import java.io.Serializable;
 import java.util.Date;
 
-public class OrdemServicoNewDTO implements Serializable {
+public class OrdemServicoNovoDTO implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	
@@ -14,7 +14,7 @@ public class OrdemServicoNewDTO implements Serializable {
 	
 	private Integer cliente;
 	
-	public OrdemServicoNewDTO() {
+	public OrdemServicoNovoDTO() {
 		
 	}
 

@@ -1,6 +1,7 @@
 package main.domain;
 
 import java.io.Serializable;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
@@ -78,6 +79,9 @@ public class OrdemServico implements Serializable {
 	}
 	
 	public String getProblemasExtras() {
+		if(problemasExtras==null||problemasExtras=="") {
+			return "Analize pendente";
+		}
 		return problemasExtras;
 	}
 	public void setProblemasExtras(String problemasExtras) {
@@ -129,6 +133,35 @@ public class OrdemServico implements Serializable {
 			return false;
 		return true;
 	}
-	
+	@Override
+	public String toString() {
+		SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yy HH:mm");
+		StringBuilder builder = new StringBuilder();
+		builder.append("\n");
+		builder.append("Manutenção numero: ");
+		builder.append(getId());
+		builder.append("\n");
+		builder.append("Data da Transição: ");
+		builder.append(sdf.format(getDataEntrada()));
+		builder.append("\n");
+		builder.append("Cliente: ");
+		builder.append(getCliente().getNome());
+		builder.append("\n");
+		builder.append("Equipamento : ");
+		builder.append(getEquipamento().getNome());
+		builder.append(" ");
+		builder.append(getEquipamento().getMarca());
+		builder.append("\n");
+		builder.append("Imagens: ");
+		builder.append("exemplo imagens");
+		builder.append("\n");
+		builder.append("Analize do tecnico: ");
+		builder.append(getProblemasExtras());
+		builder.append("\n");
+		builder.append("Valor da manutenção: ");
+		builder.append("valor");
+		builder.append("\n");
+		return builder.toString();
+	}
 	
 }

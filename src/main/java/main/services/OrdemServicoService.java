@@ -11,8 +11,8 @@ import org.springframework.stereotype.Service;
 import main.domain.Cliente;
 import main.domain.Equipamento;
 import main.domain.OrdemServico;
-import main.dto.OrdemServicoDTO;
-import main.dto.OrdemServicoNewDTO;
+import main.dto.ordem.servico.OrdemServicoDTO;
+import main.dto.ordem.servico.OrdemServicoNovoDTO;
 import main.repositories.OrdemServicoRepository;
 import main.services.exceptions.ObjectNotFoundException;
 
@@ -25,6 +25,8 @@ public class OrdemServicoService {
 	private ClienteService clienteService;
 	@Autowired
 	private EquipamentoService equipamentoService;
+	@Autowired
+	private EmailService emailService;
 
 	public OrdemServico find(Integer id) {
 		Optional<OrdemServico> obj = repo.findById(id);
@@ -35,7 +37,10 @@ public class OrdemServicoService {
 	}
 	public OrdemServico insert(OrdemServico obj) {
 		obj.setId(null);
+		obj.setDataEntrada(new Date(System.currentTimeMillis()));
+		obj.setCliente(clienteService.find(obj.getCliente().getId()));
 		obj = repo.save(obj);
+		emailService.sendOrderConfirmationEmail(obj);
 		return obj;
 	}
 
@@ -67,7 +72,7 @@ public class OrdemServicoService {
 		return ord;
 	}
 
-	public OrdemServico fromDTO(OrdemServicoNewDTO objDto) {
+	public OrdemServico fromDTO(OrdemServicoNovoDTO objDto) {
 		Cliente cli = clienteService.find(objDto.getCliente());
 		Equipamento equip = equipamentoService.find(objDto.getEquipamento());
 		OrdemServico ord = new OrdemServico(cli, equip, new Date(System.currentTimeMillis()), objDto.getProblema());

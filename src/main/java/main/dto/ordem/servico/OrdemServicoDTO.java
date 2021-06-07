@@ -1,4 +1,4 @@
-package main.dto;
+package main.dto.ordem.servico;
 
 import java.io.Serializable;
 import java.util.HashSet;

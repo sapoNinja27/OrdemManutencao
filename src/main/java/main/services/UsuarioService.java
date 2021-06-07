@@ -51,6 +51,10 @@ public class UsuarioService {
 	}
 	
 	public Usuario update(Usuario obj) {
+		UserSS user = UserService.authenticated();
+		if (user == null ||  !obj.getNome().equals(user.getUsername())) {
+			throw new AuthorizationException("Acesso negado");
+		}
 		Usuario newObj = find(obj.getId());
 		updateData(newObj, obj);
 		return repo.save(newObj);

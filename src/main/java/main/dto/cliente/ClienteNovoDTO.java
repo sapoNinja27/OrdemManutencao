@@ -1,4 +1,4 @@
-package main.dto;
+package main.dto.cliente;
 
 import java.io.Serializable;
 
@@ -6,45 +6,29 @@ import javax.validation.constraints.Email;
 import javax.validation.constraints.NotEmpty;
 
 import org.hibernate.validator.constraints.Length;
+import org.hibernate.validator.constraints.br.CPF;
 
-import main.domain.Cliente;
-
-public class ClienteDTO implements Serializable {
+public class ClienteNovoDTO implements Serializable {
 	private static final long serialVersionUID = 1L;
 
-	private Integer id;
 	@NotEmpty(message = "Preenchimento obrigatório")
 	@Length(min = 5, max = 120, message = "O tamanho deve ser entre 5 e 80 caracteres")
 	private String nome;
 	@NotEmpty(message = "Email invalido")
 	@Email
 	private String email;
-	@NotEmpty(message = "Telefone invalido")
-	private String telefone;
+	@NotEmpty(message = "Preenchimento obrigatório")
+	@CPF
+	private String cpf;
+
 	@NotEmpty(message = "Preenchimento obrigatório")
 	private String bairro;
 	@NotEmpty(message = "Preenchimento obrigatório")
 	private String cidade;
+	@NotEmpty(message = "Preenchimento obrigatório")
+	private String telefone;
 
-	public ClienteDTO() {
-
-	}
-
-	public ClienteDTO(Cliente obj) {
-		id = obj.getId();
-		nome = obj.getNome();
-		email = obj.getEmail();
-		telefone=obj.getTelefone();
-		bairro=obj.getEndereco().getBairro();
-		cidade=obj.getEndereco().getCidade();
-	}
-
-	public Integer getId() {
-		return id;
-	}
-
-	public void setId(Integer id) {
-		this.id = id;
+	public ClienteNovoDTO() {
 	}
 
 	public String getNome() {
@@ -63,12 +47,12 @@ public class ClienteDTO implements Serializable {
 		this.email = email;
 	}
 
-	public String getTelefone() {
-		return telefone;
+	public String getCpf() {
+		return cpf;
 	}
 
-	public void setTelefone(String telefone) {
-		this.telefone = telefone;
+	public void setCpf(String cpf) {
+		this.cpf = cpf;
 	}
 
 	public String getBairro() {
@@ -87,4 +71,20 @@ public class ClienteDTO implements Serializable {
 		this.cidade = cidade;
 	}
 
+	public String getTelefone() {
+		return telefone;
+	}
+
+	public void setTelefone(String telefone) {
+		this.telefone = telefone;
+	}
+
+	
+
+	
+
+
+	
+	
+	
 }

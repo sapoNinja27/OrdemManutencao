@@ -17,8 +17,9 @@ import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import main.domain.OrdemServico;
 import main.domain.enums.EstadoOrdemServico;
-import main.dto.OrdemServicoDTO;
-import main.dto.OrdemServicoNewDTO;
+import main.dto.OrdemServicoAnalizeDTO;
+import main.dto.ordem.servico.OrdemServicoNovoDTO;
+import main.dto.ordem.servico.OrdemServicoUpdateDTO;
 import main.services.OrdemServicoService;
 
 @RestController
@@ -42,15 +43,16 @@ public class OrdemServicoResources {
 	}
 	@PreAuthorize("hasAnyRole('ADMIN','RECEPCIONISTA')")
 	@RequestMapping(method = RequestMethod.POST)
-	public ResponseEntity<Void> insert(@Valid @RequestBody OrdemServicoNewDTO objDto) {
+	public ResponseEntity<Void> insert(@Valid @RequestBody OrdemServicoNovoDTO objDto) {
 		OrdemServico obj = service.fromDTO(objDto);
 		obj = service.insert(obj);
 		URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(obj.getId()).toUri();
 		return ResponseEntity.created(uri).build();
 	}
+	//PUT PARA EDITAR O PEDIDO
 	@PreAuthorize("hasAnyRole('ADMIN')")
 	@RequestMapping(value = "/{id}", method = RequestMethod.PUT)
-	public ResponseEntity<Void> update(@Valid @RequestBody OrdemServicoNewDTO objDto, @PathVariable Integer id) {
+	public ResponseEntity<Void> update(@Valid @RequestBody OrdemServicoUpdateDTO objDto, @PathVariable Integer id) {
 		//TODO 
 //		private Integer equipamento; pode ser modificado
 //		
@@ -63,6 +65,7 @@ public class OrdemServicoResources {
 		obj = service.update(obj);
 		return ResponseEntity.noContent().build();
 	}
+	//PUT PARA RECUSAR
 	@PreAuthorize("hasAnyRole('ADMIN','ANALISTA')")
 	@RequestMapping(value = "/{id}/recusar", method = RequestMethod.PUT)
 	public ResponseEntity<Void> recusar(@PathVariable Integer id) {
@@ -71,12 +74,22 @@ public class OrdemServicoResources {
 		obj = service.recusar(obj);
 		return ResponseEntity.noContent().build();
 	}
+	//PUT PARA TERMINAR A ANALIZE
+		@PreAuthorize("hasAnyRole('ADMIN','ANALISTA')")
+		@RequestMapping(value = "/{id}/finalizacoes", method = RequestMethod.PUT)
+		public ResponseEntity<Void> analizar(@Valid @RequestBody OrdemServicoAnalizeDTO objDto, @PathVariable Integer id) {
+			OrdemServico obj = service.fromDTO(objDto);
+			obj.setId(id);
+			obj = service.update(obj);
+			return ResponseEntity.noContent().build();
+		}
+	//PUT PARA FINALIZAR
 	@PreAuthorize("hasAnyRole('ADMIN','ANALISTA')")
 	@RequestMapping(value = "/{id}/finalizacoes", method = RequestMethod.PUT)
-	public ResponseEntity<Void> finish(@Valid @RequestBody OrdemServicoDTO objDto, @PathVariable Integer id) {
-		OrdemServico obj = service.fromDTO(objDto);
-		obj.setId(id);
-		obj = service.update(obj);
+	public ResponseEntity<Void> finalizar(@Valid @PathVariable Integer id) {
+//		OrdemServico obj = service.fromDTO(objDto);
+//		obj.setId(id);
+//		obj = service.update(obj);
 		return ResponseEntity.noContent().build();
 	}
 }
