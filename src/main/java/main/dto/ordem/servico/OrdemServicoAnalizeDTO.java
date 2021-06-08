@@ -9,7 +9,7 @@ import javax.persistence.ElementCollection;
 
 import main.domain.OrdemServico;
 
-public class OrdemServicoDTO implements Serializable {
+public class OrdemServicoAnalizeDTO implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 
@@ -19,11 +19,11 @@ public class OrdemServicoDTO implements Serializable {
 	@CollectionTable(name = "FOTOS")
 	private Set<String> fotos = new HashSet<String>();
 
-	public OrdemServicoDTO() {
+	public OrdemServicoAnalizeDTO() {
 
 	}
 
-	public OrdemServicoDTO(OrdemServico obj) {
+	public OrdemServicoAnalizeDTO(OrdemServico obj) {
 		problemasExtras=obj.getProblemasExtras();
 		fotos=obj.getFotos();
 	}

@@ -16,11 +16,13 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import main.domain.enums.EstadoOrdemServico;
 @Entity
 public class OrdemServico implements Serializable {
 	private static final long serialVersionUID = 1L;
-
+	private final long encode=32;
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Integer id;
@@ -32,6 +34,8 @@ public class OrdemServico implements Serializable {
 	private Date dataEntrada;
 	private String problema;
 	private String problemasExtras;
+	@JsonIgnore
+	private String serialKey;
 	@ElementCollection
 	@CollectionTable(name = "FOTOS")
 	private Set<String> fotos = new HashSet<String>();
@@ -42,6 +46,7 @@ public class OrdemServico implements Serializable {
 	
 	@Enumerated
 	private EstadoOrdemServico state;
+	private Integer valor;
 	public OrdemServico() {
 		
 	}
@@ -51,7 +56,22 @@ public class OrdemServico implements Serializable {
 		this.equipamento = equipamento;
 		this.dataEntrada = dataEntrada;
 		this.problema=problema;
+		this.serialKey=generateKey(cliente.getNome(),equipamento.getNome(),dataEntrada.toString());
 		this.state=EstadoOrdemServico.ANALIZE_PENDENTE;
+	}
+	private String generateKey(String val1,String val2,String val3) {
+		String key="";
+		key=val1+val2+val3;
+		key.replace(" ", "");
+		char keyArray[]=key.toCharArray();
+		int cod;
+		key="";
+		for(int i=0;i<keyArray.length;i++) {
+			cod=keyArray[i];
+			cod+=encode;
+			key+=cod;
+		}
+		return key;
 	}
 	public Integer getId() {
 		return id;
@@ -79,6 +99,9 @@ public class OrdemServico implements Serializable {
 	}
 	
 	public String getProblemasExtras() {
+		if(state==EstadoOrdemServico.RECUSADO) {
+			return "Pedido foi recusado antes de terminar a analize";
+		}
 		if(problemasExtras==null||problemasExtras=="") {
 			return "Analize pendente";
 		}
@@ -109,6 +132,16 @@ public class OrdemServico implements Serializable {
 	}
 	public void setCliente(Cliente cliente) {
 		this.cliente = cliente;
+	}
+	
+	public Integer getValor() {
+		return valor;
+	}
+	public void setValor(Integer valor) {
+		this.valor = valor;
+	}
+	public String getSerialKey() {
+		return serialKey;
 	}
 	@Override
 	public int hashCode() {
@@ -159,7 +192,11 @@ public class OrdemServico implements Serializable {
 		builder.append(getProblemasExtras());
 		builder.append("\n");
 		builder.append("Valor da manutenção: ");
-		builder.append("valor");
+		if(getValor()==0) {
+			builder.append("Não definido");
+		}else {
+			builder.append(getValor());
+		}
 		builder.append("\n");
 		return builder.toString();
 	}

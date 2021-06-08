@@ -5,14 +5,18 @@ import java.util.List;
 import java.util.Optional;
 import java.util.Set;
 
+import javax.transaction.Transactional;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import main.domain.Cliente;
 import main.domain.Equipamento;
 import main.domain.OrdemServico;
-import main.dto.ordem.servico.OrdemServicoDTO;
+import main.domain.enums.EstadoOrdemServico;
+import main.dto.ordem.servico.OrdemServicoAnalizeDTO;
 import main.dto.ordem.servico.OrdemServicoNovoDTO;
+import main.dto.ordem.servico.OrdemServicoUpdateDTO;
 import main.repositories.OrdemServicoRepository;
 import main.services.exceptions.ObjectNotFoundException;
 
@@ -49,11 +53,19 @@ public class OrdemServicoService {
 		updateData(newObj, obj);
 		return repo.save(newObj);
 	}
-	public OrdemServico recusar(OrdemServico obj) {
-		
+	public OrdemServico save(OrdemServico obj) {
 		return repo.save(obj);
 	}
-
+	public OrdemServico analizar(OrdemServico obj,OrdemServicoAnalizeDTO objDto) {
+		obj.setProblemasExtras(objDto.getProblemasExtras());
+		Set<String> fotos = objDto.getFotos();
+		for (String foto : fotos) {
+			obj.setFotos(foto);
+		}
+		obj.setState(EstadoOrdemServico.CONFIRMACAO_PENDENTE);
+		emailService.sendOrderConfirmationEmail(obj);
+		return repo.save(obj);
+	}
 	private void updateData(OrdemServico newObj, OrdemServico obj) {
 		newObj.setProblemasExtras(obj.getProblemasExtras());
 		Set<String> fotos = obj.getFotos();
@@ -62,7 +74,7 @@ public class OrdemServicoService {
 		}
 	}
 
-	public OrdemServico fromDTO(OrdemServicoDTO objDto) {
+	public OrdemServico fromDTO(OrdemServicoAnalizeDTO objDto) {
 		OrdemServico ord = new OrdemServico();
 		ord.setProblemasExtras(objDto.getProblemasExtras());
 		Set<String> fotos = objDto.getFotos();
@@ -71,7 +83,17 @@ public class OrdemServicoService {
 		}
 		return ord;
 	}
-
+	@Transactional
+	public OrdemServico fromDTO(OrdemServicoUpdateDTO objDto) {
+		OrdemServico ord = new OrdemServico();
+		ord.setProblema(objDto.getProblema());
+		Equipamento equi = equipamentoService.find(objDto.getEquipamento());
+		ord.setEquipamento(equi);
+		equi.addOrdem(ord);
+		equipamentoService.update(equi);
+		return ord;
+	}
+	@Transactional
 	public OrdemServico fromDTO(OrdemServicoNovoDTO objDto) {
 		Cliente cli = clienteService.find(objDto.getCliente());
 		Equipamento equip = equipamentoService.find(objDto.getEquipamento());

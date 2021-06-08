@@ -17,9 +17,10 @@ import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import main.domain.OrdemServico;
 import main.domain.enums.EstadoOrdemServico;
-import main.dto.OrdemServicoAnalizeDTO;
+import main.dto.ordem.servico.OrdemServicoAnalizeDTO;
 import main.dto.ordem.servico.OrdemServicoNovoDTO;
 import main.dto.ordem.servico.OrdemServicoUpdateDTO;
+import main.services.EmailService;
 import main.services.OrdemServicoService;
 
 @RestController
@@ -29,6 +30,8 @@ public class OrdemServicoResources {
 	@Autowired
 	private OrdemServicoService service;
 
+	@Autowired
+	private EmailService emailService;
 	
 	@RequestMapping(value = "/{id}", method = RequestMethod.GET)
 	public ResponseEntity<OrdemServico> find(@PathVariable Integer id) {
@@ -50,7 +53,7 @@ public class OrdemServicoResources {
 		return ResponseEntity.created(uri).build();
 	}
 	//PUT PARA EDITAR O PEDIDO
-	@PreAuthorize("hasAnyRole('ADMIN')")
+	@PreAuthorize("hasAnyRole('ADMIN','RECEPCIONISTA')")
 	@RequestMapping(value = "/{id}", method = RequestMethod.PUT)
 	public ResponseEntity<Void> update(@Valid @RequestBody OrdemServicoUpdateDTO objDto, @PathVariable Integer id) {
 		//TODO 
@@ -65,31 +68,45 @@ public class OrdemServicoResources {
 		obj = service.update(obj);
 		return ResponseEntity.noContent().build();
 	}
+	//PUT PARA Cliente CONFIRMAR
+		@RequestMapping(value = "/confirmar/{key}", method = RequestMethod.PUT)
+		public ResponseEntity<Void> confirmar(@PathVariable String key) {
+			String[] parse=key.split(":");
+			
+			int id=Integer.valueOf(parse[1]);
+			key=parse[2];
+			OrdemServico obj = service.find(id);
+			if(obj.getSerialKey().equals(key)) {
+				obj.setState(EstadoOrdemServico.MANUTENCAO_PENDENTE);
+			}
+			obj = service.save(obj);
+			return ResponseEntity.noContent().build();
+		}
 	//PUT PARA RECUSAR
 	@PreAuthorize("hasAnyRole('ADMIN','ANALISTA')")
 	@RequestMapping(value = "/{id}/recusar", method = RequestMethod.PUT)
 	public ResponseEntity<Void> recusar(@PathVariable Integer id) {
 		OrdemServico obj = service.find(id);
 		obj.setState(EstadoOrdemServico.RECUSADO);
-		obj = service.recusar(obj);
+		obj = service.save(obj);
 		return ResponseEntity.noContent().build();
 	}
 	//PUT PARA TERMINAR A ANALIZE
 		@PreAuthorize("hasAnyRole('ADMIN','ANALISTA')")
-		@RequestMapping(value = "/{id}/finalizacoes", method = RequestMethod.PUT)
+		@RequestMapping(value = "/{id}/analizar", method = RequestMethod.PUT)
 		public ResponseEntity<Void> analizar(@Valid @RequestBody OrdemServicoAnalizeDTO objDto, @PathVariable Integer id) {
-			OrdemServico obj = service.fromDTO(objDto);
-			obj.setId(id);
-			obj = service.update(obj);
+			OrdemServico obj =service.find(id);
+			obj = service.analizar(obj,objDto);
 			return ResponseEntity.noContent().build();
 		}
 	//PUT PARA FINALIZAR
 	@PreAuthorize("hasAnyRole('ADMIN','ANALISTA')")
-	@RequestMapping(value = "/{id}/finalizacoes", method = RequestMethod.PUT)
+	@RequestMapping(value = "/{id}/finalizar", method = RequestMethod.PUT)
 	public ResponseEntity<Void> finalizar(@Valid @PathVariable Integer id) {
-//		OrdemServico obj = service.fromDTO(objDto);
-//		obj.setId(id);
-//		obj = service.update(obj);
+		OrdemServico obj = service.find(id);
+		obj.setState(EstadoOrdemServico.CONCLUIDO);
+		emailService.sendOrderConfirmationEmail(obj);
+		obj = service.save(obj);
 		return ResponseEntity.noContent().build();
 	}
 }
