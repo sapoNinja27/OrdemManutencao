@@ -12,7 +12,9 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import main.domain.OrdemServico;
@@ -108,5 +110,13 @@ public class OrdemServicoResources {
 		emailService.sendOrderConfirmationEmail(obj);
 		obj = service.save(obj);
 		return ResponseEntity.noContent().build();
+	}
+	//post das imagens
+	@PreAuthorize("hasAnyRole('ADMIN','ANALISTA')")
+	@RequestMapping(value="/{id}/imagens", method=RequestMethod.POST)
+	public ResponseEntity<Void> uploadProblemPictures(@PathVariable Integer id,@RequestParam(name="file") MultipartFile file) {
+		System.out.println("zasadpkdspogasdogjsda"+id);
+		URI uri = service.uploadProblemPicture(file,id);
+		return ResponseEntity.created(uri).build();
 	}
 }

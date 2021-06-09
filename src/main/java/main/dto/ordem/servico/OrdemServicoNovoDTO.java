@@ -7,8 +7,8 @@ public class OrdemServicoNovoDTO implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	
-	private Integer equipamento;
-	
+	private String equipamento;
+	private String marca;
 	private Date dataEntrada;
 	private String problema;
 	
@@ -18,13 +18,31 @@ public class OrdemServicoNovoDTO implements Serializable {
 		
 	}
 
-	public Integer getEquipamento() {
+	
+
+	public String getEquipamento() {
 		return equipamento;
 	}
 
-	public void setEquipamento(Integer equipamento) {
+
+
+	public void setEquipamento(String equipamento) {
 		this.equipamento = equipamento;
 	}
+
+
+
+	public String getMarca() {
+		return marca;
+	}
+
+
+
+	public void setMarca(String marca) {
+		this.marca = marca;
+	}
+
+
 
 	public Date getDataEntrada() {
 		return dataEntrada;

@@ -25,6 +25,8 @@ public class Marca implements Serializable {
 	@JsonIgnore
 	@OneToMany(mappedBy = "marca")
 	private List<Equipamento> equipamentos=new ArrayList<Equipamento>();
+	
+	
 	public Marca() {
 		
 	}
@@ -48,13 +50,22 @@ public class Marca implements Serializable {
 	public void setNome(String nome) {
 		this.nome = nome;
 	}
-
+	public List<String> getNomesDeEquipamentos() {
+		List<String> l2=new ArrayList<>();
+		for (Equipamento equip : equipamentos) {
+			l2.add(equip.getNome());
+		}
+		return l2;
+	}
 	public List<Equipamento> getEquipamentos() {
 		List<Equipamento> l2=equipamentos;
 		return l2;
 	}
 
-	public void setEquipamentos(Equipamento equipamento) {
+	public void setEquipamentos(List<Equipamento> equipamentos) {
+		this.equipamentos = equipamentos;
+	}
+	public void addEquipamento(Equipamento equipamento) {
 		this.equipamentos.add(equipamento);
 	}
 

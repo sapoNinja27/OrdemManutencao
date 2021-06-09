@@ -46,7 +46,7 @@ public class OrdemServico implements Serializable {
 	
 	@Enumerated
 	private EstadoOrdemServico state;
-	private Integer valor;
+	private Integer valor=0;
 	public OrdemServico() {
 		
 	}
@@ -124,8 +124,12 @@ public class OrdemServico implements Serializable {
 		Set<String> f2=fotos;
 		return f2;
 	}
-	public void setFotos(String fotos) {
-		this.fotos.add(fotos);
+	
+	public void setFotos(Set<String> fotos) {
+		this.fotos = fotos;
+	}
+	public void addFoto(String foto) {
+		this.fotos.add(foto);
 	}
 	public Cliente getCliente() {
 		return cliente;

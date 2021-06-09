@@ -49,12 +49,12 @@ public class DBService {
 		Equipamento equi3=new Equipamento("furadeira", m2);
 		
 		SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy HH:mm");
-		Cliente cliente=new Cliente("paulo", "48 9 8836 9755", "email", "cpf");
-		Cliente cliente2=new Cliente("clenio", "48 9 8836 9755", "email", "cpf");
-		Cliente cliente3=new Cliente("nao tenho criatividade pra nome", "48 9 8836 9755", "email", "cpf");
-		Cliente cliente4=new Cliente("teste", "48 9 8836 9755", "email", "cpf");
-		Cliente cliente5=new Cliente("zulmito", "48 9 8836 9755", "email", "cpf");
-		Cliente cliente6=new Cliente("joedio", "48 9 8836 9755", "email", "cpf");
+		Cliente cliente=new Cliente("paulo", "48 9 8836 9755", "jp_ronzanisantos@hotmail.com", "cpf");
+		Cliente cliente2=new Cliente("clenio", "48 9 8836 9755", "jp_ronzanisantos@hotmail.com", "cpf");
+		Cliente cliente3=new Cliente("nao tenho criatividade pra nome", "48 9 8836 9755", "jp_ronzanisantos@hotmail.com", "cpf");
+		Cliente cliente4=new Cliente("teste", "48 9 8836 9755", "jp_ronzanisantos@hotmail.com", "cpf");
+		Cliente cliente5=new Cliente("zulmito", "48 9 8836 9755", "jp_ronzanisantos@hotmail.com", "cpf");
+		Cliente cliente6=new Cliente("joedio", "48 9 8836 9755", "jp_ronzanisantos@hotmail.com", "cpf");
 		Endereco end=new Endereco(cliente,"jardim amelia","sombrio");
 		cliente.setEndereco(end);
 		
