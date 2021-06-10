@@ -20,6 +20,8 @@ public class ClienteNovoDTO implements Serializable {
 	@NotEmpty(message = "Preenchimento obrigatório")
 	@CPF
 	private String cpf;
+	@Length(min = 5, max = 5, message = "Insira um RG valido")
+	private String rg;
 
 	@NotEmpty(message = "Preenchimento obrigatório")
 	private String bairro;
@@ -77,6 +79,14 @@ public class ClienteNovoDTO implements Serializable {
 
 	public void setTelefone(String telefone) {
 		this.telefone = telefone;
+	}
+
+	public String getRg() {
+		return rg;
+	}
+
+	public void setRg(String rg) {
+		this.rg = rg;
 	}
 
 	

@@ -35,7 +35,7 @@ public class ClienteService {
 	public Cliente insert(Cliente obj) {
 		obj.setId(null);
 		obj = repo.save(obj);
-		endService.insert(obj.getEndereco());
+//		endService.insert(obj.getEndereco());
 		return obj;
 	}
 	

@@ -6,6 +6,7 @@ import java.util.List;
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -17,6 +18,7 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
+import main.domain.Cliente;
 import main.domain.OrdemServico;
 import main.domain.enums.EstadoOrdemServico;
 import main.dto.ordem.servico.OrdemServicoAnalizeDTO;
@@ -70,20 +72,34 @@ public class OrdemServicoResources {
 		obj = service.update(obj);
 		return ResponseEntity.noContent().build();
 	}
+//	//PUT PARA Cliente CONFIRMAR
+//		@RequestMapping(value = "/confirmar/{key}", method = RequestMethod.GET)
+//		public ResponseEntity<Void> confirmar(@PathVariable String key) {
+//			String[] parse=key.split(":");
+//			
+//			int id=Integer.valueOf(parse[1]);
+//			key=parse[2];
+//			OrdemServico obj = service.find(id);
+//			if(obj.getSerialKey().equals(key)) {
+//				obj.setState(EstadoOrdemServico.MANUTENCAO_PENDENTE);
+//			}
+//			obj = service.save(obj);
+//			return ResponseEntity.noContent().build();
+//		}
 	//PUT PARA Cliente CONFIRMAR
-		@RequestMapping(value = "/confirmar/{key}", method = RequestMethod.PUT)
-		public ResponseEntity<Void> confirmar(@PathVariable String key) {
-			String[] parse=key.split(":");
-			
-			int id=Integer.valueOf(parse[1]);
-			key=parse[2];
-			OrdemServico obj = service.find(id);
-			if(obj.getSerialKey().equals(key)) {
-				obj.setState(EstadoOrdemServico.MANUTENCAO_PENDENTE);
+			@RequestMapping(value = "/confirmar/{key}", method = RequestMethod.GET)
+			public ResponseEntity<String> confirmar(@PathVariable String key) {
+				String[] parse=key.split(":");
+				
+				int id=Integer.valueOf(parse[1]);
+				key=parse[2];
+				OrdemServico obj = service.find(id);
+				if(obj.getSerialKey().equals(key)) {
+					obj.setState(EstadoOrdemServico.MANUTENCAO_PENDENTE);
+				}
+				obj = service.save(obj);
+				return ResponseEntity.ok().body("Confirmado");
 			}
-			obj = service.save(obj);
-			return ResponseEntity.noContent().build();
-		}
 	//PUT PARA RECUSAR
 	@PreAuthorize("hasAnyRole('ADMIN','ANALISTA')")
 	@RequestMapping(value = "/{id}/recusar", method = RequestMethod.PUT)
@@ -111,11 +127,11 @@ public class OrdemServicoResources {
 		obj = service.save(obj);
 		return ResponseEntity.noContent().build();
 	}
+		
 	//post das imagens
 	@PreAuthorize("hasAnyRole('ADMIN','ANALISTA')")
 	@RequestMapping(value="/{id}/imagens", method=RequestMethod.POST)
 	public ResponseEntity<Void> uploadProblemPictures(@PathVariable Integer id,@RequestParam(name="file") MultipartFile file) {
-		System.out.println("zasadpkdspogasdogjsda"+id);
 		URI uri = service.uploadProblemPicture(file,id);
 		return ResponseEntity.created(uri).build();
 	}

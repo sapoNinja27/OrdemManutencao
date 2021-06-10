@@ -36,7 +36,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 	private JWTUtil jwtUtil;
 //	private static final String[] PUBLIC_MATCHERS = { "/**" };
 //
-	private static final String[] PUBLIC_MATCHERS_GET = { "/equipamentos/**" };
+	private static final String[] PUBLIC_MATCHERS_GET = { "/equipamentos/**","/ordens/confirmar/**" };
 //	private static final String[] PUBLIC_MATCHERS_POST = { "/clientes/imagens/**" };
 	private static final String[] PUBLIC_MATCHERS_PUT = { "/ordens/confirmar/**" };
 

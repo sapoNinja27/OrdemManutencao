@@ -41,6 +41,12 @@ public class ClienteResources {
 	@RequestMapping(method = RequestMethod.POST)
 	public ResponseEntity<Void> insert(@Valid @RequestBody ClienteNovoDTO objDto) {
 		Cliente obj = service.fromDTO(objDto);
+		System.out.println("baoaa"+objDto.getNome());
+		System.out.println("baoaa"+objDto.getEmail());
+		System.out.println("baoaa"+objDto.getBairro());
+		System.out.println("baoaa"+objDto.getCidade());
+		System.out.println("baoaa"+objDto.getCpf());
+		System.out.println("baoaa"+objDto.getRg());
 		obj = service.insert(obj);
 		URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(obj.getId()).toUri();
 		return ResponseEntity.created(uri).build();
