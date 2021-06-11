@@ -46,7 +46,7 @@ public class OrdemServico implements Serializable {
 	
 	@Enumerated
 	private EstadoOrdemServico state;
-	private Integer valor=0;
+	private Double valor=0.0;
 	public OrdemServico() {
 		
 	}
@@ -138,10 +138,10 @@ public class OrdemServico implements Serializable {
 		this.cliente = cliente;
 	}
 	
-	public Integer getValor() {
+	public Double getValor() {
 		return valor;
 	}
-	public void setValor(Integer valor) {
+	public void setValor(Double valor) {
 		this.valor = valor;
 	}
 	public String getSerialKey() {
@@ -174,34 +174,46 @@ public class OrdemServico implements Serializable {
 	public String toString() {
 		SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yy HH:mm");
 		StringBuilder builder = new StringBuilder();
-		builder.append("\n");
-		builder.append("Manutenção numero: ");
-		builder.append(getId());
-		builder.append("\n");
-		builder.append("Data da Transição: ");
-		builder.append(sdf.format(getDataEntrada()));
-		builder.append("\n");
-		builder.append("Cliente: ");
-		builder.append(getCliente().getNome());
-		builder.append("\n");
-		builder.append("Equipamento : ");
-		builder.append(getEquipamento().getNome());
-		builder.append(" ");
-		builder.append(getEquipamento().getMarca());
-		builder.append("\n");
-		builder.append("Imagens: ");
-		builder.append("exemplo imagens");
-		builder.append("\n");
-		builder.append("Analize do tecnico: ");
-		builder.append(getProblemasExtras());
-		builder.append("\n");
-		builder.append("Valor da manutenção: ");
-		if(getValor()==0) {
-			builder.append("Não definido");
-		}else {
+		if(getState()==EstadoOrdemServico.ANALIZE_PENDENTE) {
+			builder.append("\n");
+			builder.append("Manutenção numero: ");
+			builder.append(getId());
+			builder.append("\n");
+			builder.append("Data da Transição: ");
+			builder.append(sdf.format(getDataEntrada()));
+			builder.append("\n");
+			builder.append("Cliente: ");
+			builder.append(getCliente().getNome());
+			builder.append("\n");
+			builder.append("Equipamento : ");
+			builder.append(getEquipamento().getNome());
+		}else if(getState()==EstadoOrdemServico.CONFIRMACAO_PENDENTE) {
+			builder.append("\n");
+			builder.append("Manutenção numero: ");
+			builder.append(getId());
+			builder.append("\n");
+			builder.append("Data da Transição: ");
+			builder.append(sdf.format(getDataEntrada()));
+			builder.append("\n");
+			builder.append("Cliente: ");
+			builder.append(getCliente().getNome());
+			builder.append("\n");
+			builder.append("Equipamento : ");
+			builder.append(getEquipamento().getNome());
+			builder.append(" ");
+			builder.append(getEquipamento().getMarca());
+			builder.append("\n");
+			builder.append("Imagens: ");
+			builder.append("exemplo imagens");
+			builder.append("\n");
+			builder.append("Analize do tecnico: ");
+			builder.append(getProblemasExtras());
+			builder.append("\n");
+			builder.append("Valor da manutenção: ");
 			builder.append(getValor());
+			builder.append("\n");
 		}
-		builder.append("\n");
+		
 		return builder.toString();
 	}
 	

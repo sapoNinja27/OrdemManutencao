@@ -65,6 +65,7 @@ public class OrdemServicoService {
 	}
 	public OrdemServico analizar(OrdemServico obj,OrdemServicoAnalizeDTO objDto) {
 		obj.setProblemasExtras(objDto.getProblemasExtras());
+		obj.setValor(objDto.getValor());
 		obj.setState(EstadoOrdemServico.CONFIRMACAO_PENDENTE);
 		emailService.sendOrderConfirmationEmail(obj);
 		return repo.save(obj);
@@ -77,11 +78,7 @@ public class OrdemServicoService {
 //		}
 //	}
 
-	public OrdemServico fromDTO(OrdemServicoAnalizeDTO objDto) {
-		OrdemServico ord = new OrdemServico();
-		ord.setProblemasExtras(objDto.getProblemasExtras());
-		return ord;
-	}
+	
 	@Transactional
 	public OrdemServico fromDTO(OrdemServicoUpdateDTO objDto) {
 		OrdemServico ord = new OrdemServico();

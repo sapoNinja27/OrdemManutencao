@@ -10,7 +10,7 @@ public class OrdemServicoAnalizeDTO implements Serializable {
 
 	
 	private String problemasExtras;
-
+	private Double valor;
 	public OrdemServicoAnalizeDTO() {
 
 	}
@@ -24,6 +24,14 @@ public class OrdemServicoAnalizeDTO implements Serializable {
 
 	public void setProblemasExtras(String problemasExtras) {
 		this.problemasExtras = problemasExtras;
+	}
+
+	public Double getValor() {
+		return valor;
+	}
+
+	public void setValor(Double valor) {
+		this.valor = valor;
 	}
 
 	

@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<title th:remove="all">Order Confirmation</title>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+</head>
+<body>
+	<div>
+		<h1>
+			Pedido número: <span th:text="${ordem.id}"> </span>
+		</h1>
+		<p>
+			Instante: <span
+				th:text="${#dates.format(ordem.dataEntrada, 'dd/MM/yyyy hh:mm')}"></span>
+		</p>
+		<p>
+			Cliente: <span th:text="${ordem.cliente.nome}"></span>
+		</p>
+		<p>
+			Equipamento: <span th:text="${ordem.equipamento.nome}+${ordem.equipamento.marca}"></span>
+		</p>
+		<p>
+		th:each="item : ${pedido.itens}"
+			Imagens: <img:each="foto:${ordem.fotos}" src="foto">
+		</p>
+		<p>
+			Valor total: <span
+				th:text="${#numbers.formatDecimal(ordem.valor, 0,
+'POINT', 2, 'COMMA')}"></span>
+		</p>
+	</div>
+</body>
+</html>
