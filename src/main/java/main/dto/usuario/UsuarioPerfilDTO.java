@@ -7,6 +7,7 @@ import main.domain.enums.TipoUsuario;
 public class UsuarioPerfilDTO implements Serializable {
 	private static final long serialVersionUID = 1L;
 	
+	
 	private Integer[] perfis=new Integer[TipoUsuario.totalTipos()];
 
 	public UsuarioPerfilDTO() {

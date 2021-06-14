@@ -3,15 +3,20 @@ package main.dto.ordem.servico;
 import java.io.Serializable;
 import java.util.Date;
 
+import javax.validation.constraints.NotEmpty;
+
 public class OrdemServicoNovoDTO implements Serializable {
 	private static final long serialVersionUID = 1L;
 
-	
+	@NotEmpty(message = "Preenchimento obrigatório")
 	private String equipamento;
+	@NotEmpty(message = "Preenchimento obrigatório")
 	private String marca;
+	@NotEmpty(message = "Preenchimento obrigatório")
 	private Date dataEntrada;
+	@NotEmpty(message = "Preenchimento obrigatório")
 	private String problema;
-	
+	@NotEmpty(message = "Preenchimento obrigatório")
 	private Integer cliente;
 	
 	public OrdemServicoNovoDTO() {

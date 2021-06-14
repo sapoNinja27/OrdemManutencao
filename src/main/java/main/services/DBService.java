@@ -79,18 +79,12 @@ public class DBService {
 		user.addPerfil(TipoUsuario.ANALISTA);
 		user.addPerfil(TipoUsuario.RECEPCIONISTA);
 		user.addPerfil(TipoUsuario.TECNICO);
-		
-		
 		Usuario user2=new Usuario("tec",pe.encode("1"));
 		user2.addPerfil(TipoUsuario.TECNICO);
-		
-		
 		Usuario user3=new Usuario("rec",pe.encode("1"));
 		user3.addPerfil(TipoUsuario.RECEPCIONISTA);
-		
 		Usuario user4=new Usuario("an",pe.encode("1"));
 		user4.addPerfil(TipoUsuario.ANALISTA);
-		
 		Usuario user5=new Usuario("clenio",pe.encode("1"));
 		user5.addPerfil(TipoUsuario.ANALISTA);
 		user5.addPerfil(TipoUsuario.RECEPCIONISTA);

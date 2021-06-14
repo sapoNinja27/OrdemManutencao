@@ -2,12 +2,14 @@ package main.dto.ordem.servico;
 
 import java.io.Serializable;
 
+import javax.validation.constraints.NotEmpty;
+
 public class OrdemServicoUpdateDTO implements Serializable {
 	private static final long serialVersionUID = 1L;
 
-	
+	@NotEmpty(message = "Preenchimento obrigatório")
 	private Integer equipamento;
-	
+	@NotEmpty(message = "Preenchimento obrigatório")
 	private String problema;
 	
 	
