@@ -74,6 +74,11 @@ public class Usuario implements Serializable {
 	public Set<TipoUsuario> getPerfil(){
 		return perfis;
 	}
+	
+	public void setPerfis(Set<TipoUsuario> perfis) {
+		this.perfis = perfis;
+	}
+
 	public Set<String> getNomePerfil(){
 		Set<String> nomes= new HashSet<String>();
 		for (TipoUsuario tipo : perfis) {

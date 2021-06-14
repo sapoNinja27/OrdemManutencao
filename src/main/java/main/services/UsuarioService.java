@@ -59,12 +59,8 @@ public class UsuarioService {
 		updateData(newObj, obj);
 		return repo.save(newObj);
 	}
-	public Usuario addPerfil(Usuario obj,Set<TipoUsuario> tipos) {
-		Usuario newObj = find(obj.getId());
-		for (TipoUsuario tipo : tipos) { 
-			newObj.addPerfil(tipo);
-		}
-		return repo.save(newObj);
+	public Usuario atualizar(Usuario obj) {
+		return repo.save(obj);
 	}
 	public void delete(Integer id) {
 		find(id);
@@ -78,16 +74,7 @@ public class UsuarioService {
 	public List<Usuario> findAll() {
 		return repo.findAll();
 	}
-//	public Cliente fromDTO(ClienteDTO objDto) {
-//		return new Cliente(objDto.getNome(),objDto.getTelefone(), objDto.getEmail(), null);
-//	}
-//
-//	public Cliente fromDTO(ClienteNewDTO objDto) {
-//		Cliente cli = new Cliente( objDto.getNome(),objDto.getTelefone(), objDto.getEmail(), objDto.getCpf());
-//		Endereco end = new Endereco(cli,objDto.getBairro(), objDto.getCidade());
-//		cli.setEndereco(end);
-//		return cli;
-//	}
+
 	private void updateData(Usuario newObj, Usuario obj) {
 		newObj.setNome(obj.getNome());
 		newObj.setSenha(obj.getSenha());

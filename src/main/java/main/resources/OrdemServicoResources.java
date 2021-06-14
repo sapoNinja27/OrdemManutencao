@@ -58,46 +58,35 @@ public class OrdemServicoResources {
 	@PreAuthorize("hasAnyRole('ADMIN','RECEPCIONISTA')")
 	@RequestMapping(value = "/{id}", method = RequestMethod.PUT)
 	public ResponseEntity<Void> update(@Valid @RequestBody OrdemServicoUpdateDTO objDto, @PathVariable Integer id) {
-		//TODO 
-//		private Integer equipamento; pode ser modificado
-//		
-//		private Date dataEntrada; nao pode ser modificada
-//		private String problema; pode ser modificado
-//		
-//		private Integer cliente; nao pode ser modificada
 		OrdemServico obj = service.fromDTO(objDto);
 		obj.setId(id);
 		obj = service.update(obj);
 		return ResponseEntity.noContent().build();
 	}
-//	//PUT PARA Cliente CONFIRMAR
-//		@RequestMapping(value = "/confirmar/{key}", method = RequestMethod.GET)
-//		public ResponseEntity<Void> confirmar(@PathVariable String key) {
-//			String[] parse=key.split(":");
-//			
-//			int id=Integer.valueOf(parse[1]);
-//			key=parse[2];
-//			OrdemServico obj = service.find(id);
-//			if(obj.getSerialKey().equals(key)) {
-//				obj.setState(EstadoOrdemServico.MANUTENCAO_PENDENTE);
-//			}
-//			obj = service.save(obj);
-//			return ResponseEntity.noContent().build();
-//		}
 	//PUT PARA Cliente CONFIRMAR
-			@RequestMapping(value = "/confirmar/{key}", method = RequestMethod.GET)
-			public ResponseEntity<String> confirmar(@PathVariable String key) {
-				String[] parse=key.split(":");
-				
-				int id=Integer.valueOf(parse[1]);
-				key=parse[2];
-				OrdemServico obj = service.find(id);
-				if(obj.getSerialKey().equals(key)) {
-					obj.setState(EstadoOrdemServico.MANUTENCAO_PENDENTE);
-				}
-				obj = service.save(obj);
-				return ResponseEntity.ok().body("Confirmado");
-			}
+	@RequestMapping(value = "/confirmar/{key}", method = RequestMethod.GET)
+	public ResponseEntity<String> confirmar(@PathVariable String key) {
+		String[] parse=key.split(":");
+		
+		int id=Integer.valueOf(parse[1]);
+		key=parse[2];
+		OrdemServico obj = service.find(id);
+		if(obj.getSerialKey().equals(key) && obj.getState()==EstadoOrdemServico.CONFIRMACAO_PENDENTE) {
+			obj.setState(EstadoOrdemServico.MANUTENCAO_PENDENTE);
+		}
+		obj = service.save(obj);
+		return ResponseEntity.ok().body("Confirmado");
+	}
+	//PUT PARA cancelar
+	@PreAuthorize("hasAnyRole('ADMIN','RECEPCIONISTA')")
+	@RequestMapping(value = "/{id}/cancelar", method = RequestMethod.PUT)
+	public ResponseEntity<Void> cancelar(@PathVariable Integer id) {
+		
+		OrdemServico obj = service.find(id);
+		obj.setState(EstadoOrdemServico.CANCELADO);
+		obj = service.save(obj);
+		return ResponseEntity.noContent().build();
+	}
 	//PUT PARA RECUSAR
 	@PreAuthorize("hasAnyRole('ADMIN','ANALISTA')")
 	@RequestMapping(value = "/{id}/recusar", method = RequestMethod.PUT)

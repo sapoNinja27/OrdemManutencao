@@ -10,6 +10,7 @@ import javax.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -19,7 +20,9 @@ import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import main.domain.Usuario;
 import main.domain.enums.TipoUsuario;
+import main.dto.usuario.UsuarioNovoDTO;
 import main.dto.usuario.UsuarioPerfilDTO;
+import main.dto.usuario.UsuarioUpdateDTO;
 import main.services.UsuarioService;
 
 @RestController
@@ -28,6 +31,8 @@ public class UsuarioResources {
 
 	@Autowired
 	private UsuarioService service;
+	@Autowired
+	private BCryptPasswordEncoder pe;
 
 	@PreAuthorize("hasAnyRole('ADMIN')")
 	@RequestMapping(value = "/{id}", method = RequestMethod.GET)
@@ -44,31 +49,41 @@ public class UsuarioResources {
 	}
 	@PreAuthorize("hasAnyRole('ADMIN')")
 	@RequestMapping(method = RequestMethod.POST)
-	public ResponseEntity<Void> insert(@Valid @RequestBody Usuario obj) {
+	public ResponseEntity<Void> insert(@Valid @RequestBody UsuarioNovoDTO objDto) {
+		Usuario obj=new Usuario();
+		obj.setNome(objDto.getNome());
+		obj.setSenha(pe.encode("1"));
 		service.insert(obj);
 		URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(obj.getId()).toUri();
 		return ResponseEntity.created(uri).build();
 	}
 	//alterar nome e senha
 	@RequestMapping(value = "/{id}", method = RequestMethod.PUT)
-	public ResponseEntity<Void> update(@Valid @RequestBody Usuario obj, @PathVariable Integer id) {
-		obj.setId(id);
-		obj = service.update(obj);
+	public ResponseEntity<Void> update(@Valid @RequestBody UsuarioUpdateDTO objDto, @PathVariable Integer id) {
+		Usuario obj=service.find(id);
+		
+		obj.setSenha(pe.encode(objDto.getSenha()));
+		service.atualizar(obj);
 		return ResponseEntity.noContent().build();
 	}
 	@PreAuthorize("hasAnyRole('ADMIN')")
-	@RequestMapping(value = "/cargos/{id}", method = RequestMethod.PUT)
+	@RequestMapping(value = "/{id}/cargos", method = RequestMethod.PUT)
 	public ResponseEntity<Void> AddProfile(@Valid @RequestBody UsuarioPerfilDTO objDto, @PathVariable Integer id) {
 		Usuario obj=service.find(id);
-		Set<TipoUsuario> tipos=new HashSet<TipoUsuario>();
-		for (Integer index : objDto.getPerfis()) {
-			if(index>0 && index<= TipoUsuario.totalTipos()) {
-				tipos.add(TipoUsuario.toEnum(index));
+		if(objDto.getPerfis().length>0) {
+			Set<TipoUsuario> tipos=new HashSet<TipoUsuario>();
+			obj.setPerfis(null);
+			for (Integer index : objDto.getPerfis()) {
+				if(index>0 && index<= TipoUsuario.totalTipos()) {
+					tipos.add(TipoUsuario.toEnum(index));
+				}
 			}
+			obj.setPerfis(tipos);
+			obj = service.atualizar(obj);
 		}
-		obj = service.addPerfil(obj,tipos);
 		return ResponseEntity.noContent().build();
 	}
+	
 	@PreAuthorize("hasAnyRole('ADMIN')")
 	@RequestMapping(value = "/{id}", method = RequestMethod.DELETE)
 	public ResponseEntity<Void> delete(@PathVariable Integer id) {
