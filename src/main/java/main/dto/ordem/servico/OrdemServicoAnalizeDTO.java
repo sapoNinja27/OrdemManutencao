@@ -12,7 +12,8 @@ public class OrdemServicoAnalizeDTO implements Serializable {
 
 	@NotEmpty(message = "Preenchimento obrigatório")
 	private String problemasExtras;
-	@NotEmpty(message = "Preenchimento obrigatório")
+	
+	
 	private Double valor;
 	public OrdemServicoAnalizeDTO() {
 

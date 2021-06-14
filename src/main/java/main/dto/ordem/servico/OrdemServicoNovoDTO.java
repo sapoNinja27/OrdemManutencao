@@ -12,11 +12,12 @@ public class OrdemServicoNovoDTO implements Serializable {
 	private String equipamento;
 	@NotEmpty(message = "Preenchimento obrigatório")
 	private String marca;
-	@NotEmpty(message = "Preenchimento obrigatório")
+	
 	private Date dataEntrada;
+	
 	@NotEmpty(message = "Preenchimento obrigatório")
+	
 	private String problema;
-	@NotEmpty(message = "Preenchimento obrigatório")
 	private Integer cliente;
 	
 	public OrdemServicoNovoDTO() {

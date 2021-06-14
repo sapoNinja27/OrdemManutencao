@@ -7,11 +7,11 @@ import javax.validation.constraints.NotEmpty;
 public class OrdemServicoUpdateDTO implements Serializable {
 	private static final long serialVersionUID = 1L;
 
-	@NotEmpty(message = "Preenchimento obrigatório")
+	
 	private Integer equipamento;
-	@NotEmpty(message = "Preenchimento obrigatório")
 	private String problema;
 	
+	private Double valor;
 	
 	public OrdemServicoUpdateDTO() {
 		
@@ -32,6 +32,14 @@ public class OrdemServicoUpdateDTO implements Serializable {
 
 	public void setProblema(String problema) {
 		this.problema = problema;
+	}
+
+	public Double getValor() {
+		return valor;
+	}
+
+	public void setValor(Double valor) {
+		this.valor = valor;
 	}
 
 

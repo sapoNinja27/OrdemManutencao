@@ -70,19 +70,13 @@ public class OrdemServicoService {
 		emailService.sendOrderConfirmationEmail(obj);
 		return repo.save(obj);
 	}
-//	private void updateData(OrdemServico newObj, OrdemServico obj) {
-//		newObj.setProblemasExtras(obj.getProblemasExtras());
-//		Set<String> fotos = obj.getFotos();
-//		for (String foto : fotos) {
-//			newObj.setFotos(foto);
-//		}
-//	}
-
-	
 	@Transactional
 	public OrdemServico fromDTO(OrdemServicoUpdateDTO objDto) {
 		OrdemServico ord = new OrdemServico();
 		ord.setProblema(objDto.getProblema());
+		if(objDto.getValor()!=0) {
+			ord.setValor(objDto.getValor());
+		}
 		Equipamento equi = equipamentoService.find(objDto.getEquipamento());
 		ord.setEquipamento(equi);
 		equi.addOrdem(ord);
