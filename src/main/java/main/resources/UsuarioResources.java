@@ -15,7 +15,9 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import main.domain.Usuario;
@@ -34,7 +36,7 @@ public class UsuarioResources {
 	@Autowired
 	private BCryptPasswordEncoder pe;
 
-	@PreAuthorize("hasAnyRole('ADMIN')")
+	
 	@RequestMapping(value = "/{id}", method = RequestMethod.GET)
 	public ResponseEntity<Usuario> find(@PathVariable Integer id) {
 		Usuario obj = service.find(id);
@@ -53,6 +55,7 @@ public class UsuarioResources {
 		Usuario obj=new Usuario();
 		obj.setNome(objDto.getNome());
 		obj.setSenha(pe.encode("1"));
+		obj.setNomeNormal(objDto.getNome());
 		service.insert(obj);
 		URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(obj.getId()).toUri();
 		return ResponseEntity.created(uri).build();
@@ -61,8 +64,15 @@ public class UsuarioResources {
 	@RequestMapping(value = "/{id}", method = RequestMethod.PUT)
 	public ResponseEntity<Void> update(@Valid @RequestBody UsuarioUpdateDTO objDto, @PathVariable Integer id) {
 		Usuario obj=service.find(id);
-		
-		obj.setSenha(pe.encode(objDto.getSenha()));
+		if(objDto.getSenha()!=null) {
+			obj.setSenha(pe.encode(objDto.getSenha()));
+		}
+		if(objDto.getNome()!=null) {
+			obj.setNome((objDto.getNome()));
+		}
+		if(objDto.getNomeNormal()!=null) {
+			obj.setNomeNormal((objDto.getNomeNormal()));
+		}
 		service.atualizar(obj);
 		return ResponseEntity.noContent().build();
 	}
@@ -96,4 +106,11 @@ public class UsuarioResources {
 		List<Usuario> list = service.findAll();
 		return ResponseEntity.ok().body(list);
 	}
+	//atualizar imagem de usuario
+	@PreAuthorize("hasAnyRole('ADMIN')")
+		@RequestMapping(value="/{id}/imagens", method=RequestMethod.POST)
+		public ResponseEntity<Void> uploadPictures(@PathVariable Integer id,@RequestParam(name="file") MultipartFile file) {
+			URI uri = service.uploadPicture(file,id);
+			return ResponseEntity.created(uri).build();
+		}
 }

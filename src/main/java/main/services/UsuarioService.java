@@ -1,17 +1,17 @@
 package main.services;
 
+import java.net.URI;
 import java.util.List;
 import java.util.Optional;
-import java.util.Set;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.multipart.MultipartFile;
 
 import main.domain.Cliente;
 import main.domain.Usuario;
-import main.domain.enums.TipoUsuario;
 import main.repositories.UsuarioRepository;
 import main.security.UserSS;
 import main.services.exceptions.AuthorizationException;
@@ -24,6 +24,8 @@ public class UsuarioService {
 	
 	@Autowired
 	private UsuarioRepository repo;
+	@Autowired
+	private S3Service s3Service;
 	
 	public Usuario find(Integer id) {
 		Optional<Usuario> obj = repo.findById(id);
@@ -33,10 +35,6 @@ public class UsuarioService {
 	
 	public Usuario buscarPeloNome(String nome) {
 		
-		UserSS user = UserService.authenticated();
-		if (user == null ||  !nome.equals(user.getUsername())) {
-			throw new AuthorizationException("Acesso negado");
-		}
 		Usuario obj = repo.findByNome(nome);
 		if (obj == null) {
 			throw new ObjectNotFoundException(
@@ -79,5 +77,18 @@ public class UsuarioService {
 		newObj.setNome(obj.getNome());
 		newObj.setSenha(obj.getSenha());
 	}
+	public URI uploadPicture(MultipartFile multipartFile,Integer id) {
+		UserSS user = UserService.authenticated();
+		if (user == null) {
+			throw new AuthorizationException("Acesso negado");
+		}
 
+		URI uri = s3Service.uploadFile(multipartFile);
+
+		Usuario ord = find(id);
+		ord.setImagem(uri.toString());
+		repo.save(ord);
+
+		return uri;
+	}
 }

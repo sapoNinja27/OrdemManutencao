@@ -42,19 +42,19 @@ public class DBService {
 	public void instantiateTestDataBase() throws Exception {
 		
 		Marca m1=new Marca("Rusquarna");
-		Marca m2=new Marca("bosh");
+		Marca m2=new Marca("Bosh");
 		
 		Equipamento equi1=new Equipamento("Aparador de grama", m1);
-		Equipamento equi2=new Equipamento("furadeira", m1);
-		Equipamento equi3=new Equipamento("furadeira", m2);
+		Equipamento equi2=new Equipamento("Furadeira", m1);
+		Equipamento equi3=new Equipamento("Furadeira", m2);
 		
 		SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy HH:mm");
-		Cliente cliente=new Cliente("paulo", "48 9 8836 9755", "jp_ronzanisantos@hotmail.com", "cpf");
-		Cliente cliente2=new Cliente("clenio", "48 9 8836 9755", "jp_ronzanisantos@hotmail.com", "cpf");
-		Cliente cliente3=new Cliente("nao tenho criatividade pra nome", "48 9 8836 9755", "jp_ronzanisantos@hotmail.com", "cpf");
-		Cliente cliente4=new Cliente("teste", "48 9 8836 9755", "jp_ronzanisantos@hotmail.com", "cpf");
-		Cliente cliente5=new Cliente("zulmito", "48 9 8836 9755", "jp_ronzanisantos@hotmail.com", "cpf");
-		Cliente cliente6=new Cliente("joedio", "48 9 8836 9755", "jp_ronzanisantos@hotmail.com", "cpf");
+		Cliente cliente=new Cliente("Paulo", "48 9 8836 9755", "jp_ronzanisantos@hotmail.com", "123");
+		Cliente cliente2=new Cliente("clenio", "48 9 8836 9755", "jp_ronzanisantos@hotmail.com", "321");
+		Cliente cliente3=new Cliente("nao tenho criatividade pra nome", "48 9 8836 9755", "jp_ronzanisantos@hotmail.com", "456");
+		Cliente cliente4=new Cliente("teste", "48 9 8836 9755", "jp_ronzanisantos@hotmail.com", "654");
+		Cliente cliente5=new Cliente("zulmito", "48 9 8836 9755", "jp_ronzanisantos@hotmail.com", "789");
+		Cliente cliente6=new Cliente("joedio", "48 9 8836 9755", "jp_ronzanisantos@hotmail.com", "987");
 		Endereco end=new Endereco(cliente,"jardim amelia","sombrio");
 		cliente.setEndereco(end);
 		
@@ -66,11 +66,11 @@ public class DBService {
 		OrdemServico ordem5=new OrdemServico(cliente,equi3, sdf.parse("30/09/2017 10:32"), "problema na roda");
 		OrdemServico ordem6=new OrdemServico(cliente,equi3, sdf.parse("30/09/2017 10:32"), "problema na roda");
 		ordem.setState(EstadoOrdemServico.ANALIZE_PENDENTE);
-		ordem2.setState(EstadoOrdemServico.RECUSADO);
-		ordem3.setState(EstadoOrdemServico.CONFIRMACAO_PENDENTE);
-		ordem4.setState(EstadoOrdemServico.CANCELADO);
-		ordem5.setState(EstadoOrdemServico.MANUTENCAO_PENDENTE);
-		ordem6.setState(EstadoOrdemServico.CONCLUIDO);
+//		ordem2.setState(EstadoOrdemServico.RECUSADO);
+//		ordem3.setState(EstadoOrdemServico.CONFIRMACAO_PENDENTE);
+//		ordem4.setState(EstadoOrdemServico.CANCELADO);
+//		ordem5.setState(EstadoOrdemServico.MANUTENCAO_PENDENTE);
+//		ordem6.setState(EstadoOrdemServico.CONCLUIDO);
 		equi1.addOrdem(ordem);
 		equi2.addOrdem(ordem2);
 		equi3.addOrdem(ordem3);

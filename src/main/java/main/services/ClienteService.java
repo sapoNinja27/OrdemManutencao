@@ -22,8 +22,8 @@ public class ClienteService {
 	
 	@Autowired
 	private ClienteRepository repo;
-	@Autowired
-	private EnderecoService endService;
+//	@Autowired
+//	private EnderecoService endService;
 	
 	public Cliente find(Integer id) {
 		Optional<Cliente> obj = repo.findById(id);

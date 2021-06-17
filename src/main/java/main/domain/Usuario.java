@@ -27,6 +27,10 @@ public class Usuario implements Serializable {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Integer id;
 	
+	
+	@NotEmpty(message = "Preenchimento obrigatório")
+	private String nomeNormal;
+	
 	@NotEmpty(message = "Preenchimento obrigatório")
 	private String nome;
 	@NotEmpty(message = "Preenchimento obrigatório")
@@ -37,6 +41,7 @@ public class Usuario implements Serializable {
 	@CollectionTable(name = "PERFIS")
 	private Set<TipoUsuario> perfis = new HashSet<TipoUsuario>();
 	
+	private String imagem;
 	public Usuario() {
 		
 	}
@@ -44,6 +49,7 @@ public class Usuario implements Serializable {
 	public Usuario(String nome, String senha) {
 		super();
 		this.nome = nome;
+		this.nomeNormal=nome;
 		this.senha = senha;
 	}
 
@@ -61,6 +67,14 @@ public class Usuario implements Serializable {
 
 	public void setNome(String nome) {
 		this.nome = nome;
+	}
+
+	public String getNomeNormal() {
+		return nomeNormal;
+	}
+
+	public void setNomeNormal(String nomeNormal) {
+		this.nomeNormal = nomeNormal;
 	}
 
 	public String getSenha() {
@@ -88,6 +102,14 @@ public class Usuario implements Serializable {
 	}
 	public void addPerfil(TipoUsuario perfil) {
 		perfis.add(perfil);
+	}
+
+	public String getImagem() {
+		return imagem;
+	}
+
+	public void setImagem(String imagem) {
+		this.imagem = imagem;
 	}
 
 	@Override

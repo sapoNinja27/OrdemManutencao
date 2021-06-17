@@ -20,7 +20,7 @@ public class ClienteNovoDTO implements Serializable {
 	@NotEmpty(message = "Preenchimento obrigatório")
 	@CPF
 	private String cpf;
-	@Length(min = 5, max = 5, message = "Insira um RG valido")
+	@NotEmpty(message = "Preenchimento obrigatório")
 	private String rg;
 
 	@NotEmpty(message = "Preenchimento obrigatório")

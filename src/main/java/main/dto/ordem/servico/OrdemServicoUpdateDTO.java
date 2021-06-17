@@ -2,8 +2,6 @@ package main.dto.ordem.servico;
 
 import java.io.Serializable;
 
-import javax.validation.constraints.NotEmpty;
-
 public class OrdemServicoUpdateDTO implements Serializable {
 	private static final long serialVersionUID = 1L;
 
