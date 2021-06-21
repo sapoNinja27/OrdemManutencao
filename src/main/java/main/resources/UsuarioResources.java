@@ -27,6 +27,10 @@ import main.dto.usuario.UsuarioPerfilDTO;
 import main.dto.usuario.UsuarioUpdateDTO;
 import main.services.UsuarioService;
 
+
+/**
+*Endpoint para usuarios
+*/
 @RestController
 @RequestMapping(value = "/usuarios")
 public class UsuarioResources {
@@ -60,7 +64,6 @@ public class UsuarioResources {
 		URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(obj.getId()).toUri();
 		return ResponseEntity.created(uri).build();
 	}
-	//alterar nome e senha
 	@RequestMapping(value = "/{id}", method = RequestMethod.PUT)
 	public ResponseEntity<Void> update(@Valid @RequestBody UsuarioUpdateDTO objDto, @PathVariable Integer id) {
 		Usuario obj=service.find(id);

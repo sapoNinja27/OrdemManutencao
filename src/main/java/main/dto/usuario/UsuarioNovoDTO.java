@@ -4,6 +4,9 @@ import java.io.Serializable;
 
 import javax.validation.constraints.NotEmpty;
 
+import main.services.validation.UsuarioInsert;
+
+@UsuarioInsert
 public class UsuarioNovoDTO implements Serializable {
 	private static final long serialVersionUID = 1L;
 

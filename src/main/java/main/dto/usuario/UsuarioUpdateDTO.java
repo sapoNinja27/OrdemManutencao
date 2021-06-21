@@ -2,6 +2,9 @@ package main.dto.usuario;
 
 import java.io.Serializable;
 
+import main.services.validation.UsuarioUpdate;
+
+@UsuarioUpdate
 public class UsuarioUpdateDTO implements Serializable {
 	private static final long serialVersionUID = 1L;
 	
