@@ -64,14 +64,14 @@ public class ClienteService {
 		return repo.findAll();
 	}
 	public Cliente fromDTO(ClienteUpdateDTO objDto) {
-		Cliente cli = new Cliente( objDto.getNome(),objDto.getTelefone(), objDto.getEmail(), null);
+		Cliente cli = new Cliente( objDto.getNome(),objDto.getTelefone(), objDto.getEmail(), null,null);
 		Endereco end = new Endereco(cli,objDto.getBairro(), objDto.getCidade());
 		cli.setEndereco(end);
 		return cli;
 	}
 
 	public Cliente fromDTO(ClienteNovoDTO objDto) {
-		Cliente cli = new Cliente( objDto.getNome(),objDto.getTelefone(), objDto.getEmail(), objDto.getCpf());
+		Cliente cli = new Cliente( objDto.getNome(),objDto.getTelefone(), objDto.getEmail(), objDto.getCpf(),objDto.getRg());
 		Endereco end = new Endereco(cli,objDto.getBairro(), objDto.getCidade());
 		cli.setEndereco(end);
 		return cli;

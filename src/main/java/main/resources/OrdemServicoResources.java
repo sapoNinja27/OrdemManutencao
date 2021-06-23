@@ -105,7 +105,7 @@ public class OrdemServicoResources {
 			return ResponseEntity.noContent().build();
 		}
 	//PUT PARA FINALIZAR
-	@PreAuthorize("hasAnyRole('ADMIN','ANALISTA')")
+	@PreAuthorize("hasAnyRole('ADMIN','TECNICO')")
 	@RequestMapping(value = "/{id}/finalizar", method = RequestMethod.PUT)
 	public ResponseEntity<Void> finalizar(@Valid @PathVariable Integer id) {
 		OrdemServico obj = service.find(id);

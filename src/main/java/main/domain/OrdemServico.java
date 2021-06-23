@@ -114,6 +114,9 @@ public class OrdemServico implements Serializable {
 	public EstadoOrdemServico getState() {
 		return state;
 	}
+	public Integer getPriority() {
+		return state.getCod();
+	}
 	public String getEstado() {
 		return EstadoOrdemServico.toString(state);
 	}

@@ -20,6 +20,7 @@ public class Cliente implements Serializable {
 	private String telefone;
 	private String email;
 	private String cpf;
+	private String rg;
 
 	@OneToOne(cascade = CascadeType.ALL, mappedBy = "cliente")
 	private Endereco endereco;
@@ -32,11 +33,12 @@ public class Cliente implements Serializable {
 
 	}
 
-	public Cliente(String nome, String telefone, String email, String cpf) {
+	public Cliente(String nome, String telefone, String email, String cpf, String rg) {
 		super();
 		this.nome = nome;
 		this.telefone = telefone;
 		this.cpf = cpf;
+		this.rg = rg;
 		this.email = email;
 	}
 
@@ -70,6 +72,14 @@ public class Cliente implements Serializable {
 
 	public void setCpf(String cpf) {
 		this.cpf = cpf;
+	}
+
+	public String getRg() {
+		return rg;
+	}
+
+	public void setRg(String rg) {
+		this.rg = rg;
 	}
 
 	public List<OrdemServico> getOrdens() {

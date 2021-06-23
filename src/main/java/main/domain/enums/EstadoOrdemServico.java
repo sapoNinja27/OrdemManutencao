@@ -2,10 +2,10 @@ package main.domain.enums;
 
 public enum EstadoOrdemServico {
 	ANALIZE_PENDENTE(1, "Analize pendente"),
-	RECUSADO(2, "Ordem de reparos recusada pela empresa"),
+	RECUSADO(4, "Ordem de reparos recusada pela empresa"),
 	CONFIRMACAO_PENDENTE(3, "Necessário confirmação do cliente"),
-	CANCELADO(4, "Ordem de reparos cancelada pelo cliente"),
-	MANUTENCAO_PENDENTE(5, "Manutenção pendente"),
+	CANCELADO(5, "Ordem de reparos cancelada pelo cliente"),
+	MANUTENCAO_PENDENTE(2, "Manutenção pendente"),
 	CONCLUIDO(6, "Manutenção finalizada");
 
 	private int cod;
