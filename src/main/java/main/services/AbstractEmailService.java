@@ -50,7 +50,8 @@ public abstract class AbstractEmailService implements EmailService{
 		builder.append("\n");
 		builder.append("Para confirmar o pedido acesse o link abaixo: ");
 		builder.append("\n");
-		builder.append("http://localhost:8080/ordens/confirmar/"+"request?"+obj.getId()+":"+obj.getSerialKey());
+		Integer value=obj.getId();
+		builder.append("http://localhost:8080/ordens/confirmar/"+"request="+obj.getSerialKey()+"?="+value);
 		sm.setText(builder.toString());
 		return sm;
 	}

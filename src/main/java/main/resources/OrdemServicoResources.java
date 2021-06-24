@@ -75,10 +75,10 @@ public class OrdemServicoResources {
 	//PUT PARA Cliente CONFIRMAR
 	@RequestMapping(value = "/confirmar/{key}", method = RequestMethod.GET)
 	public ResponseEntity<String> confirmar(@PathVariable String key) {
-		String[] parse=key.split(":");
-		
-		int id=Integer.valueOf(parse[1]);
-		key=parse[2];
+		String[] parse=key.split("=");
+		int id=Integer.valueOf(parse[2]);
+		key=(parse[1]);
+		key = key.replace("value", "");
 		OrdemServico obj = service.find(id);
 		if(obj.getSerialKey().equals(key) && obj.getState()==EstadoOrdemServico.CONFIRMACAO_PENDENTE) {
 			obj.setState(EstadoOrdemServico.MANUTENCAO_PENDENTE);
