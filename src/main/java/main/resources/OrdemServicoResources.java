@@ -46,6 +46,15 @@ public class OrdemServicoResources {
 		List<OrdemServico> list = service.findAll();
 		return ResponseEntity.ok().body(list);
 	}
+	
+	//get pra pegar todos pelo cliente
+	@RequestMapping(value = "/cliente/{id}",method = RequestMethod.GET)
+	public ResponseEntity<List<OrdemServico>> findAllByCliente(@PathVariable Integer id) {
+		
+		List<OrdemServico> list = service.findAllByCliente(id);
+		return ResponseEntity.ok().body(list);
+	}
+	
 	@PreAuthorize("hasAnyRole('ADMIN','RECEPCIONISTA')")
 	@RequestMapping(method = RequestMethod.POST)
 	public ResponseEntity<Void> insert(@Valid @RequestBody OrdemServicoNovoDTO objDto) {

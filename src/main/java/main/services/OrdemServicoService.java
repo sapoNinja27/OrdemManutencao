@@ -1,6 +1,7 @@
 package main.services;
 
 import java.net.URI;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Optional;
@@ -47,6 +48,17 @@ public class OrdemServicoService {
 	}
 	public List <OrdemServico> findAll() {
 		return repo.findAll();
+	}
+	public List<OrdemServico> findAllByCliente(Integer id){
+		List<OrdemServico> lista =repo.findAll();
+		List<OrdemServico> listaNova =new ArrayList<OrdemServico>();
+		for(int i = 0;i<lista.size();i++) {
+			if(lista.get(i).getCliente().getId()==id) {
+				listaNova.add(lista.get(i));
+			}
+		}
+		return repo.findAllByCliente_id(id);
+//		return listaNova;
 	}
 	public OrdemServico insert(OrdemServico obj) {
 		obj.setId(null);
