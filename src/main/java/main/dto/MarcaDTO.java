@@ -10,6 +10,7 @@ public class MarcaDTO implements Serializable {
 	
 	@NotEmpty(message = "Preenchimento obrigatório")
 	private String nome;
+	
 	@NotEmpty(message = "Preenchimento obrigatório")
 	private String equipamento;
 	

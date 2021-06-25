@@ -8,8 +8,6 @@ import main.domain.Marca;
 
 @Repository
 public interface MarcaRepository extends JpaRepository<Marca, Integer> {
-
 	@Transactional(readOnly=true)
 	Marca findByNome(String nome);
-
 }

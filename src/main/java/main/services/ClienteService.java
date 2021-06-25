@@ -15,72 +15,71 @@ import main.dto.cliente.ClienteUpdateDTO;
 import main.repositories.ClienteRepository;
 import main.services.exceptions.DataIntegrityException;
 import main.services.exceptions.ObjectNotFoundException;
-
+/**
+*Serviços de cliente
+*/
 @Service
 public class ClienteService {
-	
-	
 	@Autowired
 	private ClienteRepository repo;
-//	@Autowired
-//	private EnderecoService endService;
-	
+	@Autowired
+	private EnderecoService endService;
+	/**
+	*Busca um cliente baseado no id e retorna
+	*/
 	public Cliente find(Integer id) {
 		Optional<Cliente> obj = repo.findById(id);
 		return obj.orElseThrow(() -> new ObjectNotFoundException(
 				"Ordem de serviço não encontrado! Id: " + id ));
 	}
-	
+	/**
+	*Retorna todos os clientes
+	*/
+	public List<Cliente> findAll() {
+		return repo.findAll();
+	}
+	/**
+	*Adiciona um novo cliente
+	*/
 	@Transactional
-	public Cliente insert(Cliente obj) {
+	public Cliente insert(ClienteNovoDTO objDto) {
+		Cliente obj = new Cliente( objDto.getNome(),objDto.getTelefone(), objDto.getEmail(), objDto.getCpf(),objDto.getRg());
+		Endereco end = new Endereco(obj,objDto.getBairro(), objDto.getCidade());
+		obj.setEndereco(end);
 		obj.setId(null);
-		obj = repo.save(obj);
-//		endService.insert(obj.getEndereco());
+		update(obj);
 		return obj;
 	}
-	
-	public Cliente update(Cliente obj) {
-		Cliente newObj = find(obj.getId());
-		updateData(newObj, obj);
-		return repo.save(newObj);
+	/**
+	*Recebe um id e um cliente atualizado e insere ele no banco baseado no id, tambem atualiza o endereço ligado a este cliente
+	*/
+	public void updateCliente(Integer id,ClienteUpdateDTO objDto) {
+		Cliente obj=find(id);
+		Endereco end = endService.find(obj.getEndereco().getId());
+		end.setBairro(objDto.getBairro());
+		end.setCidade(objDto.getCidade());
+		endService.update(end);
+		obj.setEndereco(end);
+		obj.setNome(objDto.getNome());
+		obj.setEmail(objDto.getEmail());
+		obj.setTelefone(objDto.getTelefone());
+		update(obj);
 	}
-
+	/**
+	*Salva um cliente no banco
+	*/
+	private void update(Cliente obj) {
+		repo.save(obj);
+	}
+	/**
+	*Exclui um cliente baseado no id
+	*/
 	public void delete(Integer id) {
-//		Cliente cli=
-				find(id);
-//		for(int i =0; i<cli.getOrdens().size();i++) {
-//			if(cli.getOrdens().get(i).getState()==EstadoOrdemServico.CANCELADO||cli.getOrdens().get(i).getState()==EstadoOrdemServico.RECUSADO) {
-//				ordemService.
-//			}
-//		}
+		find(id);
 		try {
 			repo.deleteById(id);
 		} catch (DataIntegrityViolationException e) {
 			throw new DataIntegrityException("Não é possivel excluir um cliente com manutenção pendente");
 		}
 	}
-
-	public List<Cliente> findAll() {
-		return repo.findAll();
-	}
-	public Cliente fromDTO(ClienteUpdateDTO objDto) {
-		Cliente cli = new Cliente( objDto.getNome(),objDto.getTelefone(), objDto.getEmail(), null,null);
-		Endereco end = new Endereco(cli,objDto.getBairro(), objDto.getCidade());
-		cli.setEndereco(end);
-		return cli;
-	}
-
-	public Cliente fromDTO(ClienteNovoDTO objDto) {
-		Cliente cli = new Cliente( objDto.getNome(),objDto.getTelefone(), objDto.getEmail(), objDto.getCpf(),objDto.getRg());
-		Endereco end = new Endereco(cli,objDto.getBairro(), objDto.getCidade());
-		cli.setEndereco(end);
-		return cli;
-	}
-
-	private void updateData(Cliente newObj, Cliente obj) {
-		newObj.setNome(obj.getNome());
-		newObj.setEmail(obj.getEmail());
-		newObj.setTelefone(obj.getTelefone());
-	}
-
 }
