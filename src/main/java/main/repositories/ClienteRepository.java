@@ -7,5 +7,5 @@ import main.domain.Cliente;
 
 @Repository
 public interface ClienteRepository extends JpaRepository<Cliente, Integer> {
-	
+
 }

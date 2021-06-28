@@ -5,14 +5,13 @@ import java.io.Serializable;
 public class OrdemServicoUpdateDTO implements Serializable {
 	private static final long serialVersionUID = 1L;
 
-	
 	private Integer equipamento;
 	private String problema;
-	
+
 	private Double valor;
-	
+
 	public OrdemServicoUpdateDTO() {
-		
+
 	}
 
 	public Integer getEquipamento() {
@@ -22,7 +21,6 @@ public class OrdemServicoUpdateDTO implements Serializable {
 	public void setEquipamento(Integer equipamento) {
 		this.equipamento = equipamento;
 	}
-
 
 	public String getProblema() {
 		return problema;
@@ -39,6 +37,5 @@ public class OrdemServicoUpdateDTO implements Serializable {
 	public void setValor(Double valor) {
 		this.valor = valor;
 	}
-
 
 }

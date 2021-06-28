@@ -8,6 +8,9 @@ import main.domain.Usuario;
 
 @Repository
 public interface UsuarioRepository extends JpaRepository<Usuario, Integer> {
-	@Transactional(readOnly=true)
+	/**
+	 * Retorna um usuario por nome
+	 */
+	@Transactional(readOnly = true)
 	Usuario findByNome(String nome);
 }

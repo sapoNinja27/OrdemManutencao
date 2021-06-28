@@ -8,6 +8,9 @@ import main.domain.Marca;
 
 @Repository
 public interface MarcaRepository extends JpaRepository<Marca, Integer> {
-	@Transactional(readOnly=true)
+	/**
+	 * Retorna a marca com o determinado nome
+	 */
+	@Transactional(readOnly = true)
 	Marca findByNome(String nome);
 }

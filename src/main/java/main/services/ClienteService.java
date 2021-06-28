@@ -15,46 +15,52 @@ import main.dto.cliente.ClienteUpdateDTO;
 import main.repositories.ClienteRepository;
 import main.services.exceptions.DataIntegrityException;
 import main.services.exceptions.ObjectNotFoundException;
+
 /**
-*Serviços de cliente
-*/
+ * Serviços de cliente
+ */
 @Service
 public class ClienteService {
 	@Autowired
 	private ClienteRepository repo;
 	@Autowired
 	private EnderecoService endService;
+
 	/**
-	*Busca um cliente baseado no id e retorna
-	*/
+	 * Busca um cliente baseado no id e retorna
+	 */
 	public Cliente find(Integer id) {
 		Optional<Cliente> obj = repo.findById(id);
-		return obj.orElseThrow(() -> new ObjectNotFoundException(
-				"Ordem de serviço não encontrado! Id: " + id ));
+		return obj.orElseThrow(() -> new ObjectNotFoundException("Ordem de serviço não encontrado! Id: " + id));
 	}
+
 	/**
-	*Retorna todos os clientes
-	*/
+	 * Retorna todos os clientes
+	 */
 	public List<Cliente> findAll() {
 		return repo.findAll();
 	}
+
 	/**
-	*Adiciona um novo cliente
-	*/
+	 * Adiciona um novo cliente
+	 */
 	@Transactional
 	public Cliente insert(ClienteNovoDTO objDto) {
-		Cliente obj = new Cliente( objDto.getNome(),objDto.getTelefone(), objDto.getEmail(), objDto.getCpf(),objDto.getRg());
-		Endereco end = new Endereco(obj,objDto.getBairro(), objDto.getCidade());
+		Cliente obj = new Cliente(objDto.getNome(), objDto.getTelefone(), objDto.getEmail(), objDto.getCpf(),
+				objDto.getRg());
+		Endereco end = new Endereco(obj, objDto.getBairro(), objDto.getCidade());
 		obj.setEndereco(end);
 		obj.setId(null);
-		update(obj);
+		save(obj);
 		return obj;
 	}
+
 	/**
-	*Recebe um id e um cliente atualizado e insere ele no banco baseado no id, tambem atualiza o endereço ligado a este cliente
-	*/
-	public void updateCliente(Integer id,ClienteUpdateDTO objDto) {
-		Cliente obj=find(id);
+	 * Recebe um id e um cliente atualizado e insere ele no banco baseado no id,
+	 * tambem atualiza o endereço ligado a este cliente
+	 */
+	public void update(Integer id, ClienteUpdateDTO objDto) {
+		Cliente obj = find(id);
 		Endereco end = endService.find(obj.getEndereco().getId());
 		end.setBairro(objDto.getBairro());
 		end.setCidade(objDto.getCidade());
@@ -63,17 +69,19 @@ public class ClienteService {
 		obj.setNome(objDto.getNome());
 		obj.setEmail(objDto.getEmail());
 		obj.setTelefone(objDto.getTelefone());
-		update(obj);
+		save(obj);
 	}
+
 	/**
-	*Salva um cliente no banco
-	*/
-	private void update(Cliente obj) {
+	 * Salva um cliente no banco
+	 */
+	private void save(Cliente obj) {
 		repo.save(obj);
 	}
+
 	/**
-	*Exclui um cliente baseado no id
-	*/
+	 * Exclui um cliente baseado no id
+	 */
 	public void delete(Integer id) {
 		find(id);
 		try {

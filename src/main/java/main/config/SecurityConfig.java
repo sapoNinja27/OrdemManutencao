@@ -36,7 +36,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 	private JWTUtil jwtUtil;
 //	private static final String[] PUBLIC_MATCHERS = { "/**" };
 //
-	private static final String[] PUBLIC_MATCHERS_GET = { "/equipamentos/**","/ordens/confirmar/**","/usuarios/**" };
+	private static final String[] PUBLIC_MATCHERS_GET = { "/equipamentos/**", "/ordens/confirmar/**", "/usuarios/**" };
 //	private static final String[] PUBLIC_MATCHERS_POST = { "/clientes/imagens/**" };
 	private static final String[] PUBLIC_MATCHERS_PUT = { "/ordens/confirmar/**" };
 
@@ -48,13 +48,11 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 		}
 
 		http.cors().and().csrf().disable();
-		http.authorizeRequests()
-		.antMatchers(HttpMethod.PUT, PUBLIC_MATCHERS_PUT).permitAll()
-		.antMatchers(HttpMethod.GET, PUBLIC_MATCHERS_GET).permitAll()
+		http.authorizeRequests().antMatchers(HttpMethod.PUT, PUBLIC_MATCHERS_PUT).permitAll()
+				.antMatchers(HttpMethod.GET, PUBLIC_MATCHERS_GET).permitAll()
 //				.antMatchers(HttpMethod.POST, PUBLIC_MATCHERS_POST).permitAll()
 //		.antMatchers(PUBLIC_MATCHERS).permitAll()
-				.anyRequest()
-				.authenticated();
+				.anyRequest().authenticated();
 		http.addFilter(new JWTAuthenticationFilter(authenticationManager(), jwtUtil));
 		http.addFilter(new JWTAuthorizationFilter(authenticationManager(), jwtUtil, userDetailsService));
 		http.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
@@ -68,7 +66,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 	@Bean
 	CorsConfigurationSource corsConfigurationSource() {
 		CorsConfiguration configuration = new CorsConfiguration().applyPermitDefaultValues();
-		configuration.setAllowedMethods(Arrays.asList("POST","GET","PUT","DELETE","OPTIONS"));
+		configuration.setAllowedMethods(Arrays.asList("POST", "GET", "PUT", "DELETE", "OPTIONS"));
 		final UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
 		source.registerCorsConfiguration("/**", configuration);
 		return source;

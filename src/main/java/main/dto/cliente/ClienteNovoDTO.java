@@ -89,12 +89,4 @@ public class ClienteNovoDTO implements Serializable {
 		this.rg = rg;
 	}
 
-	
-
-	
-
-
-	
-	
-	
 }

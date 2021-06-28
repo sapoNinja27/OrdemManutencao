@@ -31,7 +31,7 @@ public class StandardError implements Serializable {
 	public Long getTimestamp() {
 		return timestamp;
 	}
-	
+
 	public void setTimestamp(Long timestamp) {
 		this.timestamp = timestamp;
 	}
@@ -67,9 +67,5 @@ public class StandardError implements Serializable {
 	public void setPath(String path) {
 		this.path = path;
 	}
-
-	
-
-	
 
 }

@@ -9,7 +9,7 @@ public interface EmailService {
 	void sendOrderConfirmationEmail(OrdemServico obj);
 
 	void sendEmail(SimpleMailMessage msg);
-	
+
 //	void sendOrderConfirmationHtmlEmail(OrdemServico obj);
 //
 //	void sendHtmlEmail(MimeMessage msg);

@@ -15,12 +15,14 @@ public class TestConfig {
 
 	@Autowired
 	private DBService dbService;
+
 	@Bean
 	public boolean instantiateDataBase() throws Exception {
-		
+
 		dbService.instantiateTestDataBase();
 		return true;
 	}
+
 	@Bean
 	public EmailService emailService() {
 		return new MockEmailService();

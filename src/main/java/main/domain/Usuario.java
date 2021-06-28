@@ -26,30 +26,30 @@ public class Usuario implements Serializable {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Integer id;
-	
-	
+
 	@NotEmpty(message = "Preenchimento obrigatório")
 	private String nomeNormal;
-	
+
 	@NotEmpty(message = "Preenchimento obrigatório")
 	private String nome;
 	@NotEmpty(message = "Preenchimento obrigatório")
 	@JsonIgnore
 	private String senha;
 	@Enumerated(EnumType.STRING)
-	@ElementCollection(fetch=FetchType.EAGER)
+	@ElementCollection(fetch = FetchType.EAGER)
 	@CollectionTable(name = "PERFIS")
 	private Set<TipoUsuario> perfis = new HashSet<TipoUsuario>();
-	
+
 	private String imagem;
+
 	public Usuario() {
-		
+
 	}
-	
+
 	public Usuario(String nome, String senha) {
 		super();
 		this.nome = nome;
-		this.nomeNormal=nome;
+		this.nomeNormal = nome;
 		this.senha = senha;
 	}
 
@@ -84,22 +84,23 @@ public class Usuario implements Serializable {
 	public void setSenha(String senha) {
 		this.senha = senha;
 	}
-	
-	public Set<TipoUsuario> getPerfil(){
+
+	public Set<TipoUsuario> getPerfil() {
 		return perfis;
 	}
-	
+
 	public void setPerfis(Set<TipoUsuario> perfis) {
 		this.perfis = perfis;
 	}
 
-	public Set<String> getNomePerfil(){
-		Set<String> nomes= new HashSet<String>();
+	public Set<String> getNomePerfil() {
+		Set<String> nomes = new HashSet<String>();
 		for (TipoUsuario tipo : perfis) {
 			nomes.add(tipo.getDescricao());
 		}
 		return nomes;
 	}
+
 	public void addPerfil(TipoUsuario perfil) {
 		perfis.add(perfil);
 	}
@@ -136,7 +137,5 @@ public class Usuario implements Serializable {
 			return false;
 		return true;
 	}
-	
-	
 
 }

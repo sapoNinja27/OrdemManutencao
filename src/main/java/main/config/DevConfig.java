@@ -18,14 +18,16 @@ public class DevConfig {
 	private DBService dbService;
 	@Value("${spring.jpa.hibernate.ddl-auto}")
 	private String strategy;
+
 	@Bean
 	public boolean instantiateDataBase() throws Exception {
-		if(!strategy.equals("create")) {
+		if (!strategy.equals("create")) {
 			return false;
 		}
 		dbService.instantiateTestDataBase();
 		return true;
 	}
+
 	@Bean
 	public EmailService emailService() {
 		return new SmtpEmailService();

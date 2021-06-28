@@ -11,17 +11,20 @@ import org.springframework.web.bind.annotation.RestController;
 import main.security.JWTUtil;
 import main.security.UserSS;
 import main.services.UserService;
+
 /**
-*Endpoint para prolongar a sessão
-*/
+ * Endpoint para prolongar a sessão
+ */
 @RestController
 @RequestMapping(value = "/auth")
 public class AuthResource {
 	@Autowired
 	private JWTUtil jwtUtil;
+
 	/**
-	*Verifica se o usuario esta logado e retorna um novo token para prolongar a sessão
-	*/
+	 * Verifica se o usuario esta logado e retorna um novo token para prolongar a
+	 * sessão
+	 */
 	@RequestMapping(value = "/refresh_token", method = RequestMethod.POST)
 	public ResponseEntity<Void> refreshToken(HttpServletResponse response) {
 		UserSS user = UserService.authenticated();

@@ -23,83 +23,91 @@ import main.dto.usuario.UsuarioPerfilDTO;
 import main.dto.usuario.UsuarioUpdateDTO;
 import main.services.UsuarioService;
 
-
 /**
-*Endpoint para usuarios
-*/
+ * Endpoint para usuarios
+ */
 @RestController
 @RequestMapping(value = "/usuarios")
 public class UsuarioResources {
 	@Autowired
 	private UsuarioService service;
+
 	/**
-	*Selecionar usuario por id
-	*/
+	 * Selecionar usuario por id
+	 */
 	@RequestMapping(value = "/{id}", method = RequestMethod.GET)
 	public ResponseEntity<Usuario> find(@PathVariable Integer id) {
 		Usuario obj = service.find(id);
 		return ResponseEntity.ok().body(obj);
 	}
+
 	/**
-	*Selecionar usuario por nome
-	*/
+	 * Selecionar usuario por nome
+	 */
 	@RequestMapping(value = "/nome/{nome}", method = RequestMethod.GET)
 	public ResponseEntity<Usuario> findByNome(@PathVariable String nome) {
 		Usuario obj = service.buscarPeloNome(nome);
 		return ResponseEntity.ok().body(obj);
 	}
+
 	/**
-	*Selecionar todos os usuarios
-	*/
+	 * Selecionar todos os usuarios
+	 */
 	@PreAuthorize("hasAnyRole('ADMIN')")
 	@RequestMapping(method = RequestMethod.GET)
 	public ResponseEntity<List<Usuario>> findAll() {
 		List<Usuario> list = service.findAll();
 		return ResponseEntity.ok().body(list);
 	}
+
 	/**
-	*Inserir novo usuario
-	*/
+	 * Inserir novo usuario
+	 */
 	@PreAuthorize("hasAnyRole('ADMIN')")
 	@RequestMapping(method = RequestMethod.POST)
 	public ResponseEntity<Void> insert(@Valid @RequestBody UsuarioNovoDTO objDto) {
-		Usuario obj=service.insert(objDto);
+		Usuario obj = service.insert(objDto);
 		URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(obj.getId()).toUri();
 		return ResponseEntity.created(uri).build();
 	}
+
 	/**
-	*Modificar usuario(Nome, Nome de usuario e Senha)
-	*/
+	 * Modificar usuario(Nome, Nome de usuario e Senha)
+	 */
 	@RequestMapping(value = "/{id}", method = RequestMethod.PUT)
 	public ResponseEntity<Void> update(@Valid @RequestBody UsuarioUpdateDTO objDto, @PathVariable Integer id) {
-		service.updateUser(id,objDto);
+		service.update(id, objDto);
 		return ResponseEntity.noContent().build();
 	}
+
 	/**
-	*Adicionar cargos para o usuario
-	*/
+	 * Adicionar cargos para o usuario
+	 */
 	@PreAuthorize("hasAnyRole('ADMIN')")
 	@RequestMapping(value = "/{id}/cargos", method = RequestMethod.PUT)
 	public ResponseEntity<Void> AddProfile(@Valid @RequestBody UsuarioPerfilDTO objDto, @PathVariable Integer id) {
-		service.adicionarCargos(id,objDto);
+		service.adicionarCargos(id, objDto);
 		return ResponseEntity.noContent().build();
 	}
+
 	/**
-	*Excluir um usuario
-	*/
+	 * Excluir um usuario
+	 */
 	@PreAuthorize("hasAnyRole('ADMIN')")
 	@RequestMapping(value = "/{id}", method = RequestMethod.DELETE)
 	public ResponseEntity<Void> delete(@PathVariable Integer id) {
 		service.delete(id);
 		return ResponseEntity.noContent().build();
 	}
+
 	/**
-	*Atualizar a imagem de usuario
-	*/
+	 * Atualizar a imagem de usuario
+	 */
 	@PreAuthorize("hasAnyRole('ADMIN')")
-		@RequestMapping(value="/{id}/imagens", method=RequestMethod.POST)
-		public ResponseEntity<Void> uploadPictures(@PathVariable Integer id,@RequestParam(name="file") MultipartFile file) {
-			URI uri = service.uploadPicture(file,id);
-			return ResponseEntity.created(uri).build();
-		}
+	@RequestMapping(value = "/{id}/imagens", method = RequestMethod.POST)
+	public ResponseEntity<Void> uploadPictures(@PathVariable Integer id,
+			@RequestParam(name = "file") MultipartFile file) {
+		URI uri = service.uploadPicture(file, id);
+		return ResponseEntity.created(uri).build();
+	}
 }

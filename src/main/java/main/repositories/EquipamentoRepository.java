@@ -10,8 +10,9 @@ import main.domain.Equipamento;
 
 @Repository
 public interface EquipamentoRepository extends JpaRepository<Equipamento, Integer> {
-	@Transactional(readOnly=true)
+	/**
+	 * Retorna todos os equipamentos com o mesmo nome
+	 */
+	@Transactional(readOnly = true)
 	List<Equipamento> findAllByNome(String nome);
-	@Transactional(readOnly=true)
-	Equipamento findByNome(String nome);
 }

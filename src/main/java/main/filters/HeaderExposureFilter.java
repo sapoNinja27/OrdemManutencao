@@ -1,6 +1,5 @@
 package main.filters;
 
-
 import java.io.IOException;
 
 import javax.servlet.Filter;
@@ -12,9 +11,8 @@ import javax.servlet.http.HttpServletResponse;
 
 import org.springframework.stereotype.Component;
 
-
 @Component
-public class HeaderExposureFilter implements Filter{
+public class HeaderExposureFilter implements Filter {
 
 	@Override
 	public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain)
@@ -23,7 +21,5 @@ public class HeaderExposureFilter implements Filter{
 		res.addHeader("access-control-expose-headers", "Location");
 		chain.doFilter(request, response);
 	}
-
-	
 
 }

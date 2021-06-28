@@ -6,9 +6,8 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.mail.SimpleMailMessage;
 
 import main.domain.OrdemServico;
-import main.domain.enums.EstadoOrdemServico;
 
-public abstract class AbstractEmailService implements EmailService{
+public abstract class AbstractEmailService implements EmailService {
 //	@Autowired
 //	private TemplateEngine templateEngine;
 //
@@ -18,66 +17,23 @@ public abstract class AbstractEmailService implements EmailService{
 //	
 	@Value("${default.sender}")
 	private String sender;
-	
-	
-	
+
 	@Override
 	public void sendOrderConfirmationEmail(OrdemServico obj) {
-		SimpleMailMessage sm  = prepareSimpleMailMessageFromOrdem(obj); ;
-		if(obj.getState()==EstadoOrdemServico.ANALIZE_PENDENTE) {
-			sm = prepareSimpleMailMessageFromOrdem(obj);
-		}else if(obj.getState()==EstadoOrdemServico.CONFIRMACAO_PENDENTE) {
-			sm = pedidoDeConfirmacao(obj);
-		}else if(obj.getState()==EstadoOrdemServico.RECUSADO) {
-			sm = mensagemCancelado(obj);
-		}else if(obj.getState()==EstadoOrdemServico.CONCLUIDO) {
-			sm = mensagemConcluido(obj);
-		}else if(obj.getState()==EstadoOrdemServico.CANCELADO) {
-			sm = mensagemCancelado(obj);
-		}
-		
+		SimpleMailMessage sm = prepareSimpleMailMessageFromOrdem(obj);
+		;
+		sm = prepareSimpleMailMessageFromOrdem(obj);
 		sendEmail(sm);
 	}
-	
-	protected SimpleMailMessage pedidoDeConfirmacao(OrdemServico obj) {
-		SimpleMailMessage sm=new SimpleMailMessage();
-		sm.setTo(obj.getCliente().getEmail());
-		sm.setFrom(sender);
-		sm.setSubject("Pedido foi aprovado pelo tecnico: " + obj.getId());
-		sm.setSentDate(new Date(System.currentTimeMillis()));
-		StringBuilder builder = new StringBuilder();
-		builder.append(obj.toString());
-		builder.append("\n");
-		builder.append("Para confirmar o pedido acesse o link abaixo: ");
-		builder.append("\n");
-		Integer value=obj.getId();
-		builder.append("http://localhost:8080/ordens/confirmar/"+"request="+obj.getSerialKey()+"?="+value);
-		sm.setText(builder.toString());
-		return sm;
-	}
-	protected SimpleMailMessage mensagemCancelado(OrdemServico obj) {
-		SimpleMailMessage sm=new SimpleMailMessage();
-		sm.setTo(obj.getCliente().getEmail());
-		sm.setFrom(sender);
-		sm.setSubject("Pedido não foi concluido: " + obj.getId());
-		sm.setSentDate(new Date(System.currentTimeMillis()));
-		sm.setText(obj.getEstado());
-		return sm;
-	}
-	protected SimpleMailMessage mensagemConcluido(OrdemServico obj) {
-		SimpleMailMessage sm=new SimpleMailMessage();
-		sm.setTo(obj.getCliente().getEmail());
-		sm.setFrom(sender);
-		sm.setSubject("Pedido foi concluido e aguarda retirada: " + obj.getId());
-		sm.setSentDate(new Date(System.currentTimeMillis()));
-		sm.setText(obj.getEstado());
-		return sm;
-	}
+
+	/**
+	 * Cria um email baseada na classe ordem pedido
+	 */
 	protected SimpleMailMessage prepareSimpleMailMessageFromOrdem(OrdemServico obj) {
-		SimpleMailMessage sm=new SimpleMailMessage();
+		SimpleMailMessage sm = new SimpleMailMessage();
 		sm.setTo(obj.getCliente().getEmail());
 		sm.setFrom(sender);
-		sm.setSubject("Pedido registrado e sera encaminhado a analize: " + obj.getId());
+		sm.setSubject(obj.getEstado() + obj.getId());
 		sm.setSentDate(new Date(System.currentTimeMillis()));
 		sm.setText(obj.toString());
 		return sm;
@@ -109,5 +65,5 @@ public abstract class AbstractEmailService implements EmailService{
 //		mmh.setText(htmlFromTemplatePedido(obj), true);
 //		return mimeMessage;
 //	}
-	
+
 }

@@ -14,9 +14,10 @@ import main.recources.exceptions.FieldMessage;
 import main.repositories.UsuarioRepository;
 
 public class UsuarioInsertValidator implements ConstraintValidator<UsuarioInsert, UsuarioNovoDTO> {
-	
+
 	@Autowired
 	private UsuarioRepository repo;
+
 	@Override
 	public void initialize(UsuarioInsert ann) {
 	}
@@ -24,8 +25,8 @@ public class UsuarioInsertValidator implements ConstraintValidator<UsuarioInsert
 	@Override
 	public boolean isValid(UsuarioNovoDTO objDto, ConstraintValidatorContext context) {
 		List<FieldMessage> list = new ArrayList<>();
-		Usuario aux=repo.findByNome(objDto.getNome());
-		if(aux!=null) {
+		Usuario aux = repo.findByNome(objDto.getNome());
+		if (aux != null) {
 			list.add(new FieldMessage("Nome", "Nome de usuario ja cadastrado"));
 		}
 		for (FieldMessage e : list) {

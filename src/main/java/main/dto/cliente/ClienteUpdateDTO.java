@@ -34,9 +34,9 @@ public class ClienteUpdateDTO implements Serializable {
 		id = obj.getId();
 		nome = obj.getNome();
 		email = obj.getEmail();
-		telefone=obj.getTelefone();
-		bairro=obj.getEndereco().getBairro();
-		cidade=obj.getEndereco().getCidade();
+		telefone = obj.getTelefone();
+		bairro = obj.getEndereco().getBairro();
+		cidade = obj.getEndereco().getCidade();
 	}
 
 	public Integer getId() {

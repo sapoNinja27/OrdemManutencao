@@ -10,27 +10,31 @@ import org.springframework.security.core.userdetails.UserDetails;
 
 import main.domain.enums.TipoUsuario;
 
-public class UserSS implements UserDetails{
+public class UserSS implements UserDetails {
 
 	private static final long serialVersionUID = 1;
 	private Integer id;
 	private String nome;
 	private String senha;
 	private Collection<? extends GrantedAuthority> authorities;
+
 	public UserSS() {
-		
+
 	}
+
 	public UserSS(Integer id, String nome, String senha, Set<TipoUsuario> perfis) {
 		super();
 		this.id = id;
 		this.nome = nome;
 		this.senha = senha;
-		this.authorities = perfis.stream().map(x -> new SimpleGrantedAuthority(x.getDescricao())).collect(Collectors.toList());
+		this.authorities = perfis.stream().map(x -> new SimpleGrantedAuthority(x.getDescricao()))
+				.collect(Collectors.toList());
 	}
 
 	public boolean hasRole(TipoUsuario perfil) {
 		return getAuthorities().contains(new SimpleGrantedAuthority(perfil.getDescricao()));
 	}
+
 	public Integer getId() {
 		return id;
 	}

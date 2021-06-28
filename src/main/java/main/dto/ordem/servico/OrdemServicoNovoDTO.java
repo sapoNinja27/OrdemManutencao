@@ -7,48 +7,34 @@ import javax.validation.constraints.NotEmpty;
 
 public class OrdemServicoNovoDTO implements Serializable {
 	private static final long serialVersionUID = 1L;
-
 	@NotEmpty(message = "Preenchimento obrigatório")
 	private String equipamento;
 	@NotEmpty(message = "Preenchimento obrigatório")
 	private String marca;
-	
 	private Date dataEntrada;
-	
 	@NotEmpty(message = "Preenchimento obrigatório")
-	
 	private String problema;
 	private Integer cliente;
-	
-	public OrdemServicoNovoDTO() {
-		
-	}
 
-	
+	public OrdemServicoNovoDTO() {
+
+	}
 
 	public String getEquipamento() {
 		return equipamento;
 	}
 
-
-
 	public void setEquipamento(String equipamento) {
 		this.equipamento = equipamento;
 	}
-
-
 
 	public String getMarca() {
 		return marca;
 	}
 
-
-
 	public void setMarca(String marca) {
 		this.marca = marca;
 	}
-
-
 
 	public Date getDataEntrada() {
 		return dataEntrada;
@@ -73,8 +59,4 @@ public class OrdemServicoNovoDTO implements Serializable {
 	public void setCliente(Integer cliente) {
 		this.cliente = cliente;
 	}
-	
-
-	
-	
 }

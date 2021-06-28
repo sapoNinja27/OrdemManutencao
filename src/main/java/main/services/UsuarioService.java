@@ -23,9 +23,10 @@ import main.security.UserSS;
 import main.services.exceptions.AuthorizationException;
 import main.services.exceptions.DataIntegrityException;
 import main.services.exceptions.ObjectNotFoundException;
+
 /**
-*Serviços de Usuario
-*/
+ * Serviços de Usuario
+ */
 @Service
 public class UsuarioService {
 	@Autowired
@@ -34,85 +35,92 @@ public class UsuarioService {
 	private S3Service s3Service;
 	@Autowired
 	private BCryptPasswordEncoder pe;
+
 	/**
-	*Retorna usuario por id
-	*/
+	 * Retorna usuario por id
+	 */
 	public Usuario find(Integer id) {
 		Optional<Usuario> obj = repo.findById(id);
-		return obj.orElseThrow(() -> new ObjectNotFoundException(
-				"Usuario inesistente! Id: " + id ));
+		return obj.orElseThrow(() -> new ObjectNotFoundException("Usuario inesistente! Id: " + id));
 	}
+
 	/**
-	*Retorna todos os usuarios
-	*/
+	 * Retorna todos os usuarios
+	 */
 	public List<Usuario> findAll() {
 		return repo.findAll();
 	}
+
 	/**
-	*Retorna usuario por nome
-	*/
+	 * Retorna usuario por nome
+	 */
 	public Usuario buscarPeloNome(String nome) {
 		Usuario obj = repo.findByNome(nome);
 		if (obj == null) {
-			throw new ObjectNotFoundException(
-					"Objeto não encontrado! Id: " + ", Tipo: " + Cliente.class.getName());
+			throw new ObjectNotFoundException("Objeto não encontrado! Id: " + ", Tipo: " + Cliente.class.getName());
 		}
 		return obj;
 	}
+
 	/**
-	*Recebe um objDto com perfis e adiciona ao usuario
-	*/
-	public void adicionarCargos(Integer id,UsuarioPerfilDTO objDto ) {
-		Usuario obj=find(id);
-		if(objDto.getPerfis().length>0) {
-			Set<TipoUsuario> tipos=new HashSet<TipoUsuario>();
+	 * Recebe um objDto com perfis e adiciona ao usuario
+	 */
+	public void adicionarCargos(Integer id, UsuarioPerfilDTO objDto) {
+		Usuario obj = find(id);
+		if (objDto.getPerfis().length > 0) {
+			Set<TipoUsuario> tipos = new HashSet<TipoUsuario>();
 			obj.setPerfis(null);
 			for (Integer index : objDto.getPerfis()) {
-				if(index>0 && index<= TipoUsuario.totalTipos()) {
+				if (index > 0 && index <= TipoUsuario.totalTipos()) {
 					tipos.add(TipoUsuario.toEnum(index));
 				}
 			}
 			obj.setPerfis(tipos);
 		}
-		update(obj);
+		save(obj);
 	}
+
 	/**
-	*Recebe um objDto que pode conter modificado(Nome, Nome de usuario e Senha) e atualiza os dados do usuario baseado no id 
-	*/
-	public void updateUser(Integer id, UsuarioUpdateDTO objDto) {
-		Usuario obj=find(id);
-		if(objDto.getSenha()!=null) {
+	 * Recebe um objDto que pode conter modificado(Nome, Nome de usuario e Senha) e
+	 * atualiza os dados do usuario baseado no id
+	 */
+	public void update(Integer id, UsuarioUpdateDTO objDto) {
+		Usuario obj = find(id);
+		if (objDto.getSenha() != null) {
 			obj.setSenha(pe.encode(objDto.getSenha()));
 		}
-		if(objDto.getNome()!=null) {
+		if (objDto.getNome() != null) {
 			obj.setNome((objDto.getNome()));
 		}
-		if(objDto.getNomeNormal()!=null) {
+		if (objDto.getNomeNormal() != null) {
 			obj.setNomeNormal((objDto.getNomeNormal()));
 		}
-		update(obj);
+		save(obj);
 	}
+
 	/**
-	*Insere um novo usuario
-	*/
+	 * Insere um novo usuario
+	 */
 	public Usuario insert(UsuarioNovoDTO objDto) {
-		Usuario obj=new Usuario();
+		Usuario obj = new Usuario();
 		obj.setNome(objDto.getNome());
 		obj.setSenha(pe.encode("1"));
 		obj.setNomeNormal(objDto.getNome());
 		obj.setId(null);
-		update(obj);
-		return obj ;
+		save(obj);
+		return obj;
 	}
+
 	/**
-	*Atualiza os dados de um usuario
-	*/
-	private void update(Usuario obj) {
+	 * Atualiza os dados de um usuario
+	 */
+	private void save(Usuario obj) {
 		repo.save(obj);
 	}
+
 	/**
-	*Excluir um usuario
-	*/
+	 * Excluir um usuario
+	 */
 	public void delete(Integer id) {
 		find(id);
 		try {
@@ -121,10 +129,12 @@ public class UsuarioService {
 			throw new DataIntegrityException("Não é possivel excluir");
 		}
 	}
+
 	/**
-	*Recebe um file e um id, salva a imagem e adiciona o link dela no campo (imagem) do usuario
-	*/
-	public URI uploadPicture(MultipartFile multipartFile,Integer id) {
+	 * Recebe um file e um id, salva a imagem e adiciona o link dela no campo
+	 * (imagem) do usuario
+	 */
+	public URI uploadPicture(MultipartFile multipartFile, Integer id) {
 		UserSS user = UserService.authenticated();
 		if (user == null) {
 			throw new AuthorizationException("Acesso negado");
@@ -132,7 +142,7 @@ public class UsuarioService {
 		URI uri = s3Service.uploadFile(multipartFile);
 		Usuario ord = find(id);
 		ord.setImagem(uri.toString());
-		update(ord);
+		save(ord);
 		return uri;
 	}
 }

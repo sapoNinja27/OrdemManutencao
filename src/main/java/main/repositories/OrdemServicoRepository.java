@@ -10,6 +10,9 @@ import main.domain.OrdemServico;
 
 @Repository
 public interface OrdemServicoRepository extends JpaRepository<OrdemServico, Integer> {
-	@Transactional(readOnly=true)
+	/**
+	 * Retorna todos os serviços de um cliente pelo id dele
+	 */
+	@Transactional(readOnly = true)
 	List<OrdemServico> findAllByCliente_id(Integer Id);
 }

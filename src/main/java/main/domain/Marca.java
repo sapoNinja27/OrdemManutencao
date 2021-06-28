@@ -20,18 +20,18 @@ public class Marca implements Serializable {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Integer id;
-	
+
 	@NotEmpty(message = "Preenchimento obrigatório")
 	private String nome;
 
 	@JsonIgnore
 	@OneToMany(mappedBy = "marca")
-	private List<Equipamento> equipamentos=new ArrayList<Equipamento>();
-	
-	
+	private List<Equipamento> equipamentos = new ArrayList<Equipamento>();
+
 	public Marca() {
-		
+
 	}
+
 	public Marca(String nome) {
 		super();
 		this.nome = nome;
@@ -52,21 +52,24 @@ public class Marca implements Serializable {
 	public void setNome(String nome) {
 		this.nome = nome;
 	}
+
 	public List<String> getNomesDeEquipamentos() {
-		List<String> l2=new ArrayList<>();
+		List<String> l2 = new ArrayList<>();
 		for (Equipamento equip : equipamentos) {
 			l2.add(equip.getNome());
 		}
 		return l2;
 	}
+
 	public List<Equipamento> getEquipamentos() {
-		List<Equipamento> l2=equipamentos;
+		List<Equipamento> l2 = equipamentos;
 		return l2;
 	}
 
 	public void setEquipamentos(List<Equipamento> equipamentos) {
 		this.equipamentos = equipamentos;
 	}
+
 	public void addEquipamento(Equipamento equipamento) {
 		this.equipamentos.add(equipamento);
 	}
@@ -95,6 +98,5 @@ public class Marca implements Serializable {
 			return false;
 		return true;
 	}
-	
 
 }

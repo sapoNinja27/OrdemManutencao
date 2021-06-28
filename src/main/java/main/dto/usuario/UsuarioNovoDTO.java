@@ -12,21 +12,16 @@ public class UsuarioNovoDTO implements Serializable {
 
 	@NotEmpty(message = "Preenchimento obrigatório")
 	private String nome;
-	
 
 	public UsuarioNovoDTO() {
 	}
-
 
 	public String getNome() {
 		return nome;
 	}
 
-
 	public void setNome(String nome) {
 		this.nome = nome;
 	}
-
-	
 
 }

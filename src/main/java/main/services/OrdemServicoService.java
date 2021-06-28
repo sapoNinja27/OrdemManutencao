@@ -23,9 +23,10 @@ import main.repositories.OrdemServicoRepository;
 import main.security.UserSS;
 import main.services.exceptions.AuthorizationException;
 import main.services.exceptions.ObjectNotFoundException;
+
 /**
-*Serviços de Ordens(Pedidos)
-*/
+ * Serviços de Ordens(Pedidos)
+ */
 @Service
 public class OrdemServicoService {
 	@Autowired
@@ -40,114 +41,131 @@ public class OrdemServicoService {
 	private EmailService emailService;
 	@Autowired
 	private S3Service s3Service;
+
 	/**
-	*Retorna uma ordem pelo id
-	*/
+	 * Retorna uma ordem pelo id
+	 */
 	public OrdemServico find(Integer id) {
 		Optional<OrdemServico> obj = repo.findById(id);
 		return obj.orElseThrow(() -> new ObjectNotFoundException("Ordem de serviço não encontrado! Id: " + id));
 	}
+
 	/**
-	*Retorna todas as ordens
-	*/
-	public List <OrdemServico> findAll() {
+	 * Retorna todas as ordens
+	 */
+	public List<OrdemServico> findAll() {
 		return repo.findAll();
 	}
+
 	/**
-	*Retorna ordens baseado em um id de cliente
-	*/
-	public List<OrdemServico> findAllByCliente(Integer id){
+	 * Retorna ordens baseado em um id de cliente
+	 */
+	public List<OrdemServico> findAllByCliente(Integer id) {
 		return repo.findAllByCliente_id(id);
 	}
+
 	/**
-	*Insere uma nova ordem atualizando as tabelas filiais e retorna o objeto novo
-	*/
+	 * Insere uma nova ordem atualizando as tabelas filiais e retorna o objeto novo
+	 */
 	@Transactional
 	public OrdemServico insert(OrdemServicoNovoDTO objDto) {
 		Cliente cli = clienteService.find(objDto.getCliente());
-		Marca marca= marcaService.find(objDto.getMarca());
-		Equipamento equip = equipamentoService.find(objDto.getEquipamento(),marca);
+		Marca marca = marcaService.find(objDto.getMarca());
+		Equipamento equip = equipamentoService.find(objDto.getEquipamento(), marca);
 		System.out.println(equip.getNome());
-		OrdemServico obj  = new OrdemServico(cli, equip, new Date(System.currentTimeMillis()), objDto.getProblema());
+		OrdemServico obj = new OrdemServico(cli, equip, new Date(System.currentTimeMillis()), objDto.getProblema());
 		equip.addOrdem(obj);
 		equipamentoService.insert(equip);
 		obj.setId(null);
-		update(obj);
+		save(obj);
 		emailService.sendOrderConfirmationEmail(obj);
 		return obj;
 	}
+
 	/**
-	*Edita informações do pedido
-	*/
+	 * Edita informações do pedido
+	 */
 	@Transactional
-	public void updateOrdem(Integer id,OrdemServicoUpdateDTO objDto) {
-		OrdemServico obj =find(id);
+	public void update(Integer id, OrdemServicoUpdateDTO objDto) {
+		OrdemServico obj = find(id);
 		obj.setProblema(objDto.getProblema());
-		if(objDto.getValor()!=0) {
+		if (objDto.getValor() != 0) {
 			obj.setValor(objDto.getValor());
 		}
 		Equipamento equi = equipamentoService.find(objDto.getEquipamento());
 		obj.setEquipamento(equi);
 		equi.addOrdem(obj);
-		update(obj);
+		save(obj);
 	}
+
 	/**
-	*Muda o estado do pedido para MANUTENCAO_PENDENTE
-	*/
+	 * Muda o estado do pedido para MANUTENCAO_PENDENTE
+	 */
 	public void confirmar(Integer id, String key) {
 		OrdemServico obj = find(id);
-		if(obj.getSerialKey().equals(key) && obj.getState()==EstadoOrdemServico.CONFIRMACAO_PENDENTE) {
+		if (obj.getSerialKey().equals(key) && obj.getState() == EstadoOrdemServico.CONFIRMACAO_PENDENTE) {
 			obj.setState(EstadoOrdemServico.MANUTENCAO_PENDENTE);
 		}
-		update(obj);
+		emailService.sendOrderConfirmationEmail(obj);
+		save(obj);
 	}
+
 	/**
-	*Muda o estado do pedido para CANCELADO
-	*/
+	 * Muda o estado do pedido para CANCELADO
+	 */
 	public void cancelar(Integer id) {
-		OrdemServico obj =find(id);
+		OrdemServico obj = find(id);
 		obj.setState(EstadoOrdemServico.CANCELADO);
-		update(obj);
+		emailService.sendOrderConfirmationEmail(obj);
+		save(obj);
 	}
+
 	/**
-	*Muda o estado do pedido para RECUSADO
-	*/
+	 * Muda o estado do pedido para RECUSADO
+	 */
 	public void recusar(Integer id) {
-		OrdemServico obj =find(id);
+		OrdemServico obj = find(id);
 		obj.setState(EstadoOrdemServico.RECUSADO);
-		update(obj);
+		emailService.sendOrderConfirmationEmail(obj);
+		save(obj);
 	}
+
 	/**
-	*Muda o estado do pedido para CONCLUIDO, manda um email avisando o cliente
-	*/
+	 * Muda o estado do pedido para CONCLUIDO, manda um email avisando o cliente
+	 */
 	public void concluir(Integer id) {
 		OrdemServico obj = find(id);
 		obj.setState(EstadoOrdemServico.CONCLUIDO);
 		emailService.sendOrderConfirmationEmail(obj);
-		update(obj);
+		save(obj);
 	}
+
 	/**
-	*Muda o estado do pedido para CONFIRMACAO_PENDENTE, adiciona um valor e problemas extras para o pedido, 
-	*envia um email para que o cliente possa confirmar
-	*/
-	public void analizar(Integer id,OrdemServicoAnalizeDTO objDto) {
-		OrdemServico obj =find(id);
+	 * Muda o estado do pedido para CONFIRMACAO_PENDENTE, adiciona um valor e
+	 * problemas extras para o pedido, envia um email para que o cliente possa
+	 * confirmar
+	 */
+	public void analizar(Integer id, OrdemServicoAnalizeDTO objDto) {
+		OrdemServico obj = find(id);
 		obj.setProblemasExtras(objDto.getProblemasExtras());
 		obj.setValor(objDto.getValor());
 		obj.setState(EstadoOrdemServico.CONFIRMACAO_PENDENTE);
 		emailService.sendOrderConfirmationEmail(obj);
-		update(obj);
+		save(obj);
 	}
+
 	/**
-	*Salva a ordem recebendo uma ordem modificada
-	*/
-	private void update(OrdemServico obj) {
+	 * Salva a ordem recebendo uma ordem modificada
+	 */
+	private void save(OrdemServico obj) {
 		repo.save(obj);
 	}
+
 	/**
-	*Faz o upload da imagem no s3 e adiciona o link dela a lista de fotos desse pedido
-	*/
-	public URI uploadProblemPicture(MultipartFile multipartFile,Integer id) {
+	 * Faz o upload da imagem no s3 e adiciona o link dela a lista de fotos desse
+	 * pedido
+	 */
+	public URI uploadProblemPicture(MultipartFile multipartFile, Integer id) {
 		UserSS user = UserService.authenticated();
 		if (user == null) {
 			throw new AuthorizationException("Acesso negado");
@@ -155,7 +173,7 @@ public class OrdemServicoService {
 		URI uri = s3Service.uploadFile(multipartFile);
 		OrdemServico ord = find(id);
 		ord.addFoto(uri.toString());
-		update(ord);
+		save(ord);
 		return uri;
 	}
 }

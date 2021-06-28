@@ -9,19 +9,19 @@ import main.domain.OrdemServico;
 public class OrdemServicoAnalizeDTO implements Serializable {
 	private static final long serialVersionUID = 1L;
 
-
 	@NotEmpty(message = "Preenchimento obrigatório")
 	private String problemasExtras;
-	
-	
+
 	private Double valor;
+
 	public OrdemServicoAnalizeDTO() {
 
 	}
 
 	public OrdemServicoAnalizeDTO(OrdemServico obj) {
-		problemasExtras=obj.getProblemasExtras();
+		problemasExtras = obj.getProblemasExtras();
 	}
+
 	public String getProblemasExtras() {
 		return problemasExtras;
 	}
@@ -37,9 +37,5 @@ public class OrdemServicoAnalizeDTO implements Serializable {
 	public void setValor(Double valor) {
 		this.valor = valor;
 	}
-
-	
-
-
 
 }
