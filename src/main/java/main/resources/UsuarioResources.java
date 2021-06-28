@@ -103,8 +103,7 @@ public class UsuarioResources {
 	/**
 	 * Atualizar a imagem de usuario
 	 */
-	@PreAuthorize("hasAnyRole('ADMIN')")
-	@RequestMapping(value = "/{id}/imagens", method = RequestMethod.POST)
+	@RequestMapping(value = "/imagem/{id}", method = RequestMethod.POST)
 	public ResponseEntity<Void> uploadPictures(@PathVariable Integer id,
 			@RequestParam(name = "file") MultipartFile file) {
 		URI uri = service.uploadPicture(file, id);
