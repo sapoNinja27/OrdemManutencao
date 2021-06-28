@@ -84,7 +84,7 @@ public class UsuarioResources {
 	 * Adicionar cargos para o usuario
 	 */
 	@PreAuthorize("hasAnyRole('ADMIN')")
-	@RequestMapping(value = "/{id}/cargos", method = RequestMethod.PUT)
+	@RequestMapping(value = "/cargos/{id}", method = RequestMethod.PUT)
 	public ResponseEntity<Void> AddProfile(@Valid @RequestBody UsuarioPerfilDTO objDto, @PathVariable Integer id) {
 		service.adicionarCargos(id, objDto);
 		return ResponseEntity.noContent().build();
