@@ -81,18 +81,12 @@ public class OrdemServicoResources {
 	}
 
 	/**
-	 * Responde a um link criado com a encriptação do nome do cliente e a data da
-	 * ordem o link virá em um formato(palavra=key=id) usando a função split do java
-	 * é coletado e separado no caractere "=" é feita a requisição para liberar o
-	 * pedido id=? enviando como variavel auxiliar a key
+	 * Responde a um link criado com a encriptação do nome do cliente e a data 
+	 * @param key : chave de acesso e id do cliente formatados no mesmo parametro (request="chave de acesso"value="id")
 	 */
 	@RequestMapping(value = "/confirmar/{key}", method = RequestMethod.GET)
 	public ResponseEntity<String> confirmar(@PathVariable String key) {
-		String[] parse = key.split("=");
-		int id = Integer.valueOf(parse[2]);
-		key = (parse[1]);
-		key = key.replace("value", "");
-		service.confirmar(id, key);
+		service.confirmar(key);
 		return ResponseEntity.ok().body("Confirmado");
 	}
 
@@ -140,6 +134,8 @@ public class OrdemServicoResources {
 
 	/**
 	 * Recebe uma imagem que sera adicionada ao pedido
+	 * @param id : o id do usuario
+	 * @param file : imagem a ser feita o upload
 	 */
 	@PreAuthorize("hasAnyRole('ADMIN','ANALISTA')")
 	@RequestMapping(value = "/{id}/imagens", method = RequestMethod.POST)

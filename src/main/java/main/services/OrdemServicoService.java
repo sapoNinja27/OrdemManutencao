@@ -101,7 +101,12 @@ public class OrdemServicoService {
 	/**
 	 * Muda o estado do pedido para MANUTENCAO_PENDENTE
 	 */
-	public void confirmar(Integer id, String key) {
+	public void confirmar(String key) {
+		String[] parse = key.split("=");
+		int id = Integer.valueOf(parse[2]);
+		key = (parse[1]);
+		key = key.replace("value", "");
+		id=id/24971;
 		OrdemServico obj = find(id);
 		if (obj.getSerialKey().equals(key) && obj.getState() == EstadoOrdemServico.CONFIRMACAO_PENDENTE) {
 			obj.setState(EstadoOrdemServico.MANUTENCAO_PENDENTE);

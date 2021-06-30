@@ -33,7 +33,7 @@ public class UsuarioResources {
 	private UsuarioService service;
 
 	/**
-	 * Selecionar usuario por id
+	 * Buscar usuario por id
 	 */
 	@RequestMapping(value = "/{id}", method = RequestMethod.GET)
 	public ResponseEntity<Usuario> find(@PathVariable Integer id) {
@@ -42,7 +42,7 @@ public class UsuarioResources {
 	}
 
 	/**
-	 * Selecionar usuario por nome
+	 * Buscar usuario por nome
 	 */
 	@RequestMapping(value = "/nome/{nome}", method = RequestMethod.GET)
 	public ResponseEntity<Usuario> findByNome(@PathVariable String nome) {
@@ -51,7 +51,7 @@ public class UsuarioResources {
 	}
 
 	/**
-	 * Selecionar todos os usuarios
+	 * Buscar todos os usuarios
 	 */
 	@PreAuthorize("hasAnyRole('ADMIN')")
 	@RequestMapping(method = RequestMethod.GET)

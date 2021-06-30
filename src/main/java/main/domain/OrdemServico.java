@@ -236,7 +236,7 @@ public class OrdemServico implements Serializable {
 			builder.append("\n");
 			builder.append("Clique no link para confirmar o pedido: ");
 			builder.append("\n");
-			builder.append("http://localhost:8080/ordens/confirmar/request=" + getSerialKey() + "value=" + getId());
+			builder.append("http://localhost:8080/ordens/confirmar/request=" + getSerialKey() + "value=" + (getId()*24971));
 			builder.append("\n");
 		} else if (getState() == EstadoOrdemServico.CONCLUIDO) {
 			builder.append("Pedido concluido e pronto para retirada ");

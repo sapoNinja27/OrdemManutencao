@@ -1,7 +1,7 @@
 package main.services;
 
-import java.text.SimpleDateFormat;
 import java.util.Arrays;
+import java.util.Date;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -47,8 +47,6 @@ public class DBService {
 		Equipamento equi1 = new Equipamento("Aparador de grama", m1);
 		Equipamento equi2 = new Equipamento("Furadeira", m1);
 		Equipamento equi3 = new Equipamento("Furadeira", m2);
-
-		SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy HH:mm");
 		Cliente cliente = new Cliente("Paulo", "48 9 8836 9755", "jp_ronzanisantos@hotmail.com", "12534314311",
 				"34123466743");
 		Cliente cliente2 = new Cliente("Clenio", "48 9 8836 9755", "jp_ronzanisantos@hotmail.com", "12534314311",
@@ -64,12 +62,17 @@ public class DBService {
 		Endereco end = new Endereco(cliente, "jardim amelia", "sombrio");
 		cliente.setEndereco(end);
 
-		OrdemServico ordem = new OrdemServico(cliente, equi1, sdf.parse("30/09/2017 10:32"), "problema na roda");
-		OrdemServico ordem2 = new OrdemServico(cliente2, equi2, sdf.parse("30/09/2017 10:32"), "problema na roda");
-		OrdemServico ordem3 = new OrdemServico(cliente3, equi3, sdf.parse("30/09/2017 10:32"), "problema na roda");
-		OrdemServico ordem4 = new OrdemServico(cliente4, equi3, sdf.parse("30/09/2017 10:32"), "problema na roda");
-		OrdemServico ordem5 = new OrdemServico(cliente5, equi3, sdf.parse("30/09/2017 10:32"), "problema na roda");
-		OrdemServico ordem6 = new OrdemServico(cliente6, equi3, sdf.parse("30/09/2017 10:32"), "problema na roda");
+		OrdemServico ordem = new OrdemServico(cliente, equi1, new Date(System.currentTimeMillis()), "problema na roda");
+		OrdemServico ordem2 = new OrdemServico(cliente2, equi2, new Date(System.currentTimeMillis()),
+				"problema na roda");
+		OrdemServico ordem3 = new OrdemServico(cliente3, equi3, new Date(System.currentTimeMillis()),
+				"problema na roda");
+		OrdemServico ordem4 = new OrdemServico(cliente4, equi3, new Date(System.currentTimeMillis()),
+				"problema na roda");
+		OrdemServico ordem5 = new OrdemServico(cliente5, equi3, new Date(System.currentTimeMillis()),
+				"problema na roda");
+		OrdemServico ordem6 = new OrdemServico(cliente6, equi3, new Date(System.currentTimeMillis()),
+				"problema na roda");
 		ordem2.setState(EstadoOrdemServico.CANCELADO);
 		ordem3.setState(EstadoOrdemServico.RECUSADO);
 		ordem4.setState(EstadoOrdemServico.CONFIRMACAO_PENDENTE);
